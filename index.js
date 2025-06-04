@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());                       // <-- abilita CORS per tutte le origini
+app.use(cors());                       // <-- abilita CORS per tutte le origini 1
 app.use(express.json());
 
 app.post('/sei-cappelli', async (req, res) => {
