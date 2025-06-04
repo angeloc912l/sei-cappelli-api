@@ -42,21 +42,22 @@ async function callOpenAI(prompt) {
 }
 
 app.post('/sei-cappelli', async (req, res) => {
-  const { domanda } = req.body;
-  if (!domanda || domanda.trim() === '') {
-    return res.status(400).json({ errore: 'Domanda mancante o vuota.' });
+  const { domanda, cappello } = req.body;
+
+  if (!domanda || !cappello) {
+    return res.status(400).json({ errore: 'Domanda o cappello mancante.' });
   }
 
+  const cappelloObj = cappelli.find(c => c.nome === cappello.toLowerCase());
+  if (!cappelloObj) {
+    return res.status(400).json({ errore: 'Cappello non valido.' });
+  }
+
+  const prompt = `Applica il cappello ${cappelloObj.nome.toUpperCase()} sulla seguente domanda/idea: "${domanda}". ${cappelloObj.descrizione}`;
+
   try {
-    const promises = cappelli.map(cappello => {
-      const prompt = `Applica il cappello ${cappello.nome.toUpperCase()} sulla seguente domanda/idea: "${domanda}". ${cappello.descrizione}`;
-      return callOpenAI(prompt).then(risposta => ({ [cappello.nome]: risposta }));
-    });
-
-    const resultsArray = await Promise.all(promises);
-    const risultati = Object.assign({}, ...resultsArray);
-
-    res.json(risultati);
+    const risposta = await callOpenAI(prompt);
+    res.json({ [cappelloObj.nome]: risposta });
   } catch (error) {
     console.error('Errore API:', error.response?.data || error.message);
     res.status(500).json({ errore: 'Errore nella richiesta all\'Assistant API' });
