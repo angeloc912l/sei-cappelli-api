@@ -22,7 +22,7 @@ async function callOpenAI(prompt) {
   const response = await axios.post(
     'https://api.openai.com/v1/chat/completions',
     {
-      model: "gpt-3.5-turbo",
+      model: 'gpt-3.5-turbo',
       messages: [
         {
           role: 'system',
@@ -48,12 +48,14 @@ app.post('/sei-cappelli', async (req, res) => {
   }
 
   try {
-    const risultati = {};
-    for (const cappello of cappelli) {
+    const promises = cappelli.map(cappello => {
       const prompt = `Applica il cappello ${cappello.nome.toUpperCase()} sulla seguente domanda/idea: "${domanda}". ${cappello.descrizione}`;
-      const risposta = await callOpenAI(prompt);
-      risultati[cappello.nome] = risposta;
-    }
+      return callOpenAI(prompt).then(risposta => ({ [cappello.nome]: risposta }));
+    });
+
+    const resultsArray = await Promise.all(promises);
+    const risultati = Object.assign({}, ...resultsArray);
+
     res.json(risultati);
   } catch (error) {
     console.error('Errore API:', error.response?.data || error.message);
@@ -62,5 +64,5 @@ app.post('/sei-cappelli', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server avviato su http://localhost:${PORT}`);
+  console.log(`✅ Server avviato su http://localhost:${PORT}`);
 });
