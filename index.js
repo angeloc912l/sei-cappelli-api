@@ -81,10 +81,10 @@ async function callOpenAI(prompt) {
 }
 
 app.post('/sei-cappelli', async (req, res) => {
-  const { domanda, cappello, intenzione } = req.body;
+  const { domanda, cappello, IntenzioneUtente } = req.body;
 
-  if (!domanda || !cappello || !intenzione) {
-    return res.status(400).json({ errore: 'Domanda, cappello o intenzione mancanti.' });
+  if (!domanda || !cappello || !IntenzioneUtente) {
+    return res.status(400).json({ errore: 'Domanda, cappello o IntenzioneUtente mancanti.' });
   }
 
   const cappelloObj = cappelli.find(c => c.nome === cappello.toLowerCase());
@@ -92,18 +92,20 @@ app.post('/sei-cappelli', async (req, res) => {
     return res.status(400).json({ errore: 'Cappello non valido.' });
   }
 
-  if (!intenzioni[intenzione]) {
-    return res.status(400).json({ errore: 'Intenzione non valida.' });
+  const intenzioneLower = IntenzioneUtente.toLowerCase();
+
+  if (!intenzioni[intenzioneLower]) {
+    return res.status(400).json({ errore: 'IntenzioneUtente non valida.' });
   }
 
   // Costruzione prompt personalizzato
   const prompt = `
-Intenzione: ${intenzione}
-Obiettivo: ${intenzioni[intenzione].descrizione}
+Intenzione: ${intenzioneLower}
+Obiettivo: ${intenzioni[intenzioneLower].descrizione}
 
-${intenzioni[intenzione].guidaGenerale}
+${intenzioni[intenzioneLower].guidaGenerale}
 
-Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzione].cappelli[cappelloObj.nome]}
+Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzioneLower].cappelli[cappelloObj.nome]}
 
 Domanda/idea dell’utente: "${domanda}"
 `;
