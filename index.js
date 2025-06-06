@@ -81,8 +81,13 @@ async function callOpenAI(prompt) {
 }
 
 app.post('/sei-cappelli', async (req, res) => {
-  // Leggi dal body le proprietà con le chiavi corrette
   const { domanda, cappello, intenzione } = req.body;
+
+  // ✅ Log delle variabili ricevute (visibili su Render)
+  console.log('📥 Richiesta ricevuta da Storyline');
+  console.log('🧠 Domanda:', domanda);
+  console.log('🎩 Cappello:', cappello);
+  console.log('🎯 Intenzione:', intenzione);
 
   if (!domanda || !cappello || !intenzione) {
     return res.status(400).json({ errore: 'domanda, cappello o intenzione mancanti.' });
@@ -99,7 +104,6 @@ app.post('/sei-cappelli', async (req, res) => {
     return res.status(400).json({ errore: 'intenzione non valida.' });
   }
 
-  // Costruzione prompt personalizzato
   const prompt = `
 Intenzione: ${intenzioneLower}
 Obiettivo: ${intenzioni[intenzioneLower].descrizione}
@@ -111,11 +115,14 @@ Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzioneLower].cappel
 Domanda/idea dell’utente: "${domanda}"
 `;
 
+  // ✅ Log anche del prompt generato (utile per debugging)
+  console.log("📄 Prompt generato per OpenAI:\n", prompt);
+
   try {
     const risposta = await callOpenAI(prompt);
     res.json({ [cappelloObj.nome]: risposta });
   } catch (error) {
-    console.error('Errore API:', error.response?.data || error.message);
+    console.error('❌ Errore API:', error.response?.data || error.message);
     res.status(500).json({ errore: 'Errore nella richiesta all\'Assistant API' });
   }
 });
