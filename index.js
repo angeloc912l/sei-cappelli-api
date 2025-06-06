@@ -18,6 +18,45 @@ const cappelli = [
   { nome: 'blu', descrizione: 'Gestisci e sintetizza il pensiero.' },
 ];
 
+const intenzioni = {
+  chiarimento: {
+    descrizione: "L’utente desidera chiarire e comprendere meglio una situazione o un problema.",
+    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, fornisci una risposta che aiuti a fare luce sull’argomento in modo semplice, ordinato e strutturato.",
+    cappelli: {
+      bianco: "Fornisci 5 fatti e dati oggettivi rilevanti.",
+      rosso: "Esprimi sentimenti, intuizioni o emozioni che potrebbero emergere in chi cerca chiarezza.",
+      nero: "Evidenzia i potenziali rischi da chiarire.",
+      giallo: "Sottolinea i possibili benefici e punti di forza da comprendere meglio.",
+      verde: "Suggerisci prospettive alternative per chiarire meglio la questione.",
+      blu: "Organizza le informazioni e guida il processo di chiarimento."
+    }
+  },
+  valutazione: {
+    descrizione: "L’utente desidera valutare l’efficacia o validità di un’idea o situazione.",
+    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
+    cappelli: {
+      bianco: "Fornisci 5 fatti e dati oggettivi per aiutare la valutazione.",
+      rosso: "Esprimi reazioni emotive o intuitive sull’idea da valutare.",
+      nero: "Analizza rischi, limiti o aspetti critici.",
+      giallo: "Valuta vantaggi e opportunità.",
+      verde: "Proponi varianti o miglioramenti all’idea.",
+      blu: "Riassumi i punti chiave per trarre una conclusione valutativa."
+    }
+  },
+  generazione: {
+    descrizione: "L’utente desidera generare nuove idee o alternative creative.",
+    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, favorisci la creatività anche con proposte fuori dagli schemi.",
+    cappelli: {
+      bianco: "Fornisci almeno 10 dati oggettivi come base per nuove idee.",
+      rosso: "Esplora sensazioni o intuizioni che potrebbero ispirare idee originali.",
+      nero: "Individua ostacoli da superare per innovare.",
+      giallo: "Mostra benefici e potenzialità di nuove proposte.",
+      verde: "Genera almeno 3 idee creative e fuori dagli schemi.",
+      blu: "Organizza il processo di generazione delle idee e suggerisci i prossimi passi."
+    }
+  }
+};
+
 async function callOpenAI(prompt) {
   const response = await axios.post(
     'https://api.openai.com/v1/chat/completions',
@@ -42,10 +81,10 @@ async function callOpenAI(prompt) {
 }
 
 app.post('/sei-cappelli', async (req, res) => {
-  const { domanda, cappello } = req.body;
+  const { domanda, cappello, intenzione } = req.body;
 
-  if (!domanda || !cappello) {
-    return res.status(400).json({ errore: 'Domanda o cappello mancante.' });
+  if (!domanda || !cappello || !intenzione) {
+    return res.status(400).json({ errore: 'Domanda, cappello o intenzione mancanti.' });
   }
 
   const cappelloObj = cappelli.find(c => c.nome === cappello.toLowerCase());
@@ -53,7 +92,21 @@ app.post('/sei-cappelli', async (req, res) => {
     return res.status(400).json({ errore: 'Cappello non valido.' });
   }
 
-  const prompt = `Applica il cappello ${cappelloObj.nome.toUpperCase()} sulla seguente domanda/idea: "${domanda}". ${cappelloObj.descrizione}`;
+  if (!intenzioni[intenzione]) {
+    return res.status(400).json({ errore: 'Intenzione non valida.' });
+  }
+
+  // Costruzione prompt personalizzato
+  const prompt = `
+Intenzione: ${intenzione}
+Obiettivo: ${intenzioni[intenzione].descrizione}
+
+${intenzioni[intenzione].guidaGenerale}
+
+Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzione].cappelli[cappelloObj.nome]}
+
+Domanda/idea dell’utente: "${domanda}"
+`;
 
   try {
     const risposta = await callOpenAI(prompt);
