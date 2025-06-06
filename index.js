@@ -81,11 +81,11 @@ async function callOpenAI(prompt) {
 }
 
 app.post('/sei-cappelli', async (req, res) => {
-  // Usa le stesse maiuscole/minuscole del client
-  const { domanda, cappello, IntenzioneUtente } = req.body;
+  // Leggi dal body le proprietà con le chiavi corrette
+  const { domanda, cappello, intenzione } = req.body;
 
-  if (!domanda || !cappello || !IntenzioneUtente) {
-    return res.status(400).json({ errore: 'domanda, cappello o IntenzioneUtente mancanti.' });
+  if (!domanda || !cappello || !intenzione) {
+    return res.status(400).json({ errore: 'domanda, cappello o intenzione mancanti.' });
   }
 
   const cappelloObj = cappelli.find(c => c.nome === cappello.toLowerCase());
@@ -93,10 +93,10 @@ app.post('/sei-cappelli', async (req, res) => {
     return res.status(400).json({ errore: 'cappello non valido.' });
   }
 
-  const intenzioneLower = IntenzioneUtente.toLowerCase();
+  const intenzioneLower = intenzione.toLowerCase();
 
   if (!intenzioni[intenzioneLower]) {
-    return res.status(400).json({ errore: 'IntenzioneUtente non valida.' });
+    return res.status(400).json({ errore: 'intenzione non valida.' });
   }
 
   // Costruzione prompt personalizzato
