@@ -81,15 +81,16 @@ async function callOpenAI(prompt) {
 }
 
 app.post('/sei-cappelli', async (req, res) => {
-  const { DomandaUtente, CappelloSelezionato, IntenzioneUtente } = req.body;
+  // Usa le stesse maiuscole/minuscole del client
+  const { domanda, cappello, IntenzioneUtente } = req.body;
 
-  if (!DomandaUtente || !CappelloSelezionato || !IntenzioneUtente) {
-    return res.status(400).json({ errore: 'DomandaUtente, CappelloSelezionato o IntenzioneUtente mancanti.' });
+  if (!domanda || !cappello || !IntenzioneUtente) {
+    return res.status(400).json({ errore: 'domanda, cappello o IntenzioneUtente mancanti.' });
   }
 
-  const cappelloObj = cappelli.find(c => c.nome === CappelloSelezionato.toLowerCase());
+  const cappelloObj = cappelli.find(c => c.nome === cappello.toLowerCase());
   if (!cappelloObj) {
-    return res.status(400).json({ errore: 'CappelloSelezionato non valido.' });
+    return res.status(400).json({ errore: 'cappello non valido.' });
   }
 
   const intenzioneLower = IntenzioneUtente.toLowerCase();
@@ -107,7 +108,7 @@ ${intenzioni[intenzioneLower].guidaGenerale}
 
 Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzioneLower].cappelli[cappelloObj.nome]}
 
-Domanda/idea dell’utente: "${DomandaUtente}"
+Domanda/idea dell’utente: "${domanda}"
 `;
 
   try {
