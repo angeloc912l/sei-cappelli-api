@@ -35,7 +35,7 @@ const intenzioni = {
     descrizione: "L’utente desidera valutare l’efficacia o validità di un’idea o situazione.",
     guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
     cappelli: {
-      bianco: "Fornisci 5 fatti e dati oggettivi per aiutare la valutazione. Evita interpretazioni, opinioni personali o frasi ipotetiche come 'potrebbe' o 'forse'. Riporta solo informazioni concrete e verificabili. Almeno un fatto deve contenere numeri o percentuali",
+      bianco: "Fornisci 5 fatti e dati oggettivi per aiutare la valutazione. Evita interpretazioni, opinioni personali o frasi ipotetiche come “potrebbe” o “forse”. Riporta solo informazioni concrete, verificabili e prive di deduzioni, conseguenze o suggerimenti. Almeno uno dei fatti deve includere numeri o percentuali.",
       rosso: "Esprimi reazioni emotive o intuitive sull’idea da valutare.",
       nero: "Analizza rischi, limiti o aspetti critici.",
       giallo: "Valuta vantaggi e opportunità.",
