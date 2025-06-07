@@ -3,9 +3,26 @@ const axios = require('axios');
 const cors = require('cors');
 require('dotenv').config();
 const leoProfanity = require('leo-profanity');
+const badwordsIt = require('./badwords-it');
 
-leoProfanity.loadDictionary(); // carica dizionario inglese di default
-leoProfanity.add(leoProfanity.getDictionary('it')); // aggiunge dizionario italiano
+// Carica il dizionario inglese di default
+leoProfanity.loadDictionary();
+
+// Aggiunge il dizionario italiano
+leoProfanity.add(leoProfanity.getDictionary('it'));
+
+// Aggiunge parole personalizzate (opzionale)
+leoProfanity.add(badwordsIt);
+
+// Ora la lista contiene inglese + italiano + personalizzate
+// Puoi usarla così:
+const listaParolacce = leoProfanity.list();
+
+// Funzione per verificare una parola
+function isBadWord(word) {
+  return leoProfanity.check(word);
+}
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
