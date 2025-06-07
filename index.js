@@ -3,7 +3,9 @@ const axios = require('axios');
 const cors = require('cors');
 require('dotenv').config();
 const leoProfanity = require('leo-profanity');
-leoProfanity.loadDictionary();
+
+leoProfanity.loadDictionary(); // carica dizionario inglese di default
+leoProfanity.add(leoProfanity.getDictionary('it')); // aggiunge dizionario italiano
 
 const app = express();
 const PORT = process.env.PORT || 3000;
