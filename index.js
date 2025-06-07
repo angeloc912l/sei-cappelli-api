@@ -23,7 +23,6 @@ function isBadWord(word) {
   return leoProfanity.check(word);
 }
 
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -103,6 +102,11 @@ async function callOpenAI(prompt) {
 
 app.post('/sei-cappelli', async (req, res) => {
   const { domanda, cappello, intenzione } = req.body;
+
+  // **Filtro parolacce**: blocca la richiesta se nella domanda ci sono parole offensive
+  if (leoProfanity.check(domanda)) {
+    return res.status(400).json({ errore: 'La domanda contiene parole non consentite.' });
+  }
 
   // ✅ Log delle variabili ricevute (visibili su Render)
   console.log('📥 Richiesta ricevuta da Storyline');
