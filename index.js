@@ -38,17 +38,36 @@ const intenzioni = {
     }
   },
   valutazione: {
-    descrizione: "L’utente desidera valutare l’efficacia o validità di un’idea o situazione.",
-    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
-    cappelli: {
-      bianco: "Fornisci 5 fatti e dati oggettivi per aiutare la valutazione. Evita interpretazioni, opinioni personali o frasi ipotetiche come “potrebbe” o “forse”. Riporta solo informazioni concrete, verificabili e prive di deduzioni, conseguenze o suggerimenti. Almeno uno dei fatti deve includere numeri o percentuali.",
-      rosso: "Esprimi reazioni emotive o intuitive sull’idea da valutare.",
-      nero: "Analizza rischi, limiti o aspetti critici.",
-      giallo: "Valuta vantaggi e opportunità.",
-      verde: "Proponi varianti o miglioramenti all’idea.",
-      blu: "Riassumi i punti chiave per trarre una conclusione valutativa."
-    }
-  },
+  descrizione: "L’utente desidera valutare l’efficacia o validità di un’idea o situazione.",
+  guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
+  cappelli: {
+    bianco: `
+Fornisci 5 fatti e dati oggettivi per aiutare la valutazione. 
+
+⚠️ IMPORTANTE: 
+- NON INVENTARE nulla.
+- NON INTERPRETARE.
+- NON DEDURRE.
+- NON usare parole come “potrebbe”, “forse”, “è possibile”, “probabilmente”.
+- NON includere consigli, opinioni o suggerimenti.
+
+✅ OGNI FATTO deve essere:
+- Concreto
+- Verificabile
+- Neutro (privo di giudizi o deduzioni)
+- Presentato in modo chiaro e conciso
+- Almeno uno dei fatti deve contenere numeri, percentuali o dati quantitativi.
+
+❌ Se non disponi di 5 fatti oggettivi e verificabili sull’argomento in questione, RIFIUTA la risposta e scrivi:
+"Non sono disponibili abbastanza dati oggettivi per rispondere con il cappello bianco."
+    `,
+    rosso: "Esprimi reazioni emotive o intuitive sull’idea da valutare.",
+    nero: "Analizza rischi, limiti o aspetti critici.",
+    giallo: "Valuta vantaggi e opportunità.",
+    verde: "Proponi varianti o miglioramenti all’idea.",
+    blu: "Riassumi i punti chiave per trarre una conclusione valutativa."
+  }
+},
   generazione: {
     descrizione: "L’utente desidera generare nuove idee o alternative creative.",
     guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, favorisci la creatività anche con proposte fuori dagli schemi.",
