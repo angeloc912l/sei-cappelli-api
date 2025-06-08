@@ -42,7 +42,7 @@ const intenzioni = {
   guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
   cappelli: {
     bianco: `
-Fornisci 5 fatti e dati oggettivi per aiutare la valutazione. 
+Fornisci al massimo 5 fatti e dati oggettivi per aiutare la valutazione. 
 
 ⚠️ IMPORTANTE: 
 - NON INVENTARE nulla.
@@ -58,8 +58,8 @@ Fornisci 5 fatti e dati oggettivi per aiutare la valutazione.
 - Presentato in modo chiaro e conciso
 - Almeno uno dei fatti deve contenere numeri, percentuali o dati quantitativi.
 
-❌ Se non disponi di 5 fatti oggettivi e verificabili sull’argomento in questione, RIFIUTA la risposta e scrivi:
-"Non sono disponibili abbastanza dati oggettivi per rispondere con il cappello bianco."
+❌ Se non sono disponibili abbastanza informazioni oggettive (es. mancanza di documentazione ufficiale), scrivi:
+"Non sono disponibili abbastanza dati oggettivi per rispondere con il cappello bianco"
     `,
     rosso: "Esprimi reazioni emotive o intuitive sull’idea da valutare.",
     nero: "Analizza rischi, limiti o aspetti critici.",
