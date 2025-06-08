@@ -42,21 +42,27 @@ const intenzioni = {
   guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
   cappelli: {
     bianco: `
-Fornisci al massimo 5 fatti e dati oggettivi utili alla valutazione.
+Fornisci al massimo 10 fatti e dati oggettivi utili alla valutazione.
 
-⚠️ REGOLE:
-- NON inventare informazioni.
-- NON usare frasi vaghe come “potrebbe”, “forse”, “probabilmente”.
-- NON dare consigli, interpretazioni o opinioni personali.
+Quando indossi il cappello bianco devi imitare un computer.
+Il computer è imparziale e obiettivo. Non offre interpretazioni e non esprime opinioni
+Nessuna proposta.
+Devi cercare e concentrarti sulle informazioni, solo fatti.
 
-✅ OGNI FATTO deve essere:
-- Concreto
-- Verificabile (es. basato su documentazione ufficiale, specifiche tecniche, fonti attendibili)
-- Neutro (senza deduzioni o giudizi)
-- Almeno uno dei fatti deve includere dati quantitativi (es. numeri, limiti, versioni, percentuali o date).
+Devi privilegiare informazioni che appartengono a fatti controllati e accertati.
 
-❌ Se non è disponibile nemmeno un dato oggettivo, scrivi:
-"Non sono disponibili abbastanza dati oggettivi per rispondere con il cappello bianco."
+Solo se fatti controllati e accertati non sono sufficienti, puoi fornire fatti creduti, 
+cioè considerati veri ma non controllati fino in fondo. Quest'ultimi fatti (fatti creduti, considerati veri ma non controllati) devono essere forniti se provvisti di una «cornice» appropriata che indichi il loro grado di verosimiglianza.
+
+Una scala della verosomiglianza accettata è la seguente:
+
+sempre vero
+quasi sempre vero
+generalmente vero
+in genere
+più sovente che no
+almeno nella metà dei casi
+spesso"
     `,
     rosso: "Esprimi reazioni emotive o intuitive sull’idea da valutare.",
     nero: "Analizza rischi, limiti o aspetti critici.",
