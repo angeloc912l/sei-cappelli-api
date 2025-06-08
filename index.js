@@ -5,7 +5,6 @@ require('dotenv').config();
 const leoProfanity = require('leo-profanity');
 const badwordsIt = require('./badwords-it');
 
-// Carica dizionario inglese e italiano + personalizzate
 leoProfanity.loadDictionary();
 leoProfanity.add(leoProfanity.getDictionary('it'));
 leoProfanity.add(badwordsIt);
@@ -64,13 +63,10 @@ const intenzioni = {
   }
 };
 
-// Funzione per bloccare frasi con ripetizioni eccessive senza senso
 function checkRipetizioniBanali(testo) {
-  // Controlla se la stessa parola si ripete almeno 4 volte di seguito
   return /(\b\w+\b)(?:\s+\1){3,}/i.test(testo);
 }
 
-// Funzione chiamata per la moderazione semantica approfondita
 async function callSemanticModeration(testo) {
   const prompt = `
 Sei un moderatore di contenuti esperto che valuta testi in italiano.
@@ -144,34 +140,25 @@ app.post('/sei-cappelli', async (req, res) => {
     return res.status(400).json({ errore: 'domanda, cappello o intenzione mancanti.' });
   }
 
-  // Filtro preliminare contro ripetizioni eccessive senza senso
   if (checkRipetizioniBanali(domanda)) {
     return res.status(400).json({ errore: 'Testo bloccato: ripetizioni eccessive senza senso.' });
   }
 
-  // Filtro rapido parole offensive
   if (leoProfanity.check(domanda)) {
-    // Se il filtro rapido trova parolacce, fai la moderazione semantica approfondita
     try {
       const { category, text } = await callSemanticModeration(domanda);
 
       if (category === 'OFFENSIVO' || category === 'NO-SENSE') {
         return res.status(400).json({ errore: `Testo bloccato: ${category}. ${text}` });
       } else if (category === 'POTENZIALMENTE') {
-        // Potresti scegliere di bloccare o avvisare
         return res.status(400).json({ errore: `Testo potenzialmente rischioso. ${text}` });
       }
-      // Se accettabile, procedi
     } catch (error) {
       console.error('Errore nella moderazione semantica:', error.message);
       return res.status(500).json({ errore: 'Errore nel controllo del contenuto.' });
     }
-  } else {
-    // Se filtro rapido pulito, puoi fare comunque la moderazione semantica (opzionale)
-    // oppure procedere direttamente
   }
 
-  // Verifica cappello e intenzione validi
   const cappelloObj = cappelli.find(c => c.nome === cappello.toLowerCase());
   if (!cappelloObj) {
     return res.status(400).json({ errore: 'cappello non valido.' });
@@ -183,7 +170,6 @@ app.post('/sei-cappelli', async (req, res) => {
     return res.status(400).json({ errore: 'intenzione non valida.' });
   }
 
-  // Costruzione prompt per OpenAI
   const prompt = `
 Intenzione: ${intenzioneLower}
 Obiettivo: ${intenzioni[intenzioneLower].descrizione}
@@ -195,10 +181,15 @@ Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzioneLower].cappel
 Domanda/idea dell’utente: "${domanda}"
 `;
 
-  console.log("📄 Prompt generato per OpenAI:\n", prompt);
-
   try {
     const risposta = await callOpenAI(prompt);
     res.json({ [cappelloObj.nome]: risposta });
   } catch (error) {
     console.error('❌ Errore API:', error.response?.data || error.message);
+    return res.status(500).json({ errore: 'Errore nella chiamata all\'API OpenAI' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server avviato sulla porta ${PORT}`);
+});
