@@ -71,20 +71,20 @@ async function callSemanticModeration(testo) {
   const prompt = `
 Sei un moderatore di contenuti esperto che valuta testi in italiano.
 
-Leggi questo testo:
+Leggi questa frase:
 
 "${testo}"
 
-Valuta se la frase ha senso compiuto e comunica un significato chiaro oppure se è una ripetizione senza senso o frasi casuali.
+Valuta se la frase ha senso compiuto, comunica un significato chiaro e coerente, oppure è una ripetizione senza senso, una frase casuale o assurda senza logica.
 
 Classifica il contenuto come uno dei seguenti:
 
 - OFFENSIVO (contenuti volgari, violenti, discriminatori, sessualmente espliciti)
 - POTENZIALMENTE RISCHIOSO (contenuti ambigui o borderline)
-- NO-SENSE (frasi incoerenti, senza senso, ripetitive o non comprensibili)
+- NO-SENSE (frasi incoerenti, senza senso o non comprensibili)
 - ACCETTABILE (testo appropriato, chiaro e sensato)
 
-Rispondi con una sola parola tra le quattro categorie sopra, eventualmente aggiungendo una breve spiegazione (max 20 parole).
+Rispondi con una sola parola tra le quattro categorie sopra e, se possibile, aggiungi una breve spiegazione (max 20 parole).
 `;
 
   const response = await axios.post(
