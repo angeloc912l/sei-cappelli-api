@@ -64,6 +64,12 @@ const intenzioni = {
   }
 };
 
+// Funzione per bloccare frasi con ripetizioni eccessive senza senso
+function checkRipetizioniBanali(testo) {
+  // Controlla se la stessa parola si ripete almeno 4 volte di seguito
+  return /(\b\w+\b)(?:\s+\1){3,}/i.test(testo);
+}
+
 // Funzione chiamata per la moderazione semantica approfondita
 async function callSemanticModeration(testo) {
   const prompt = `
@@ -73,14 +79,16 @@ Leggi questo testo:
 
 "${testo}"
 
+Valuta se la frase ha senso compiuto e comunica un significato chiaro oppure se è una ripetizione senza senso o frasi casuali.
+
 Classifica il contenuto come uno dei seguenti:
 
 - OFFENSIVO (contenuti volgari, violenti, discriminatori, sessualmente espliciti)
 - POTENZIALMENTE RISCHIOSO (contenuti ambigui o borderline)
-- NO-SENSE (frasi incoerenti, senza senso o non comprensibili)
+- NO-SENSE (frasi incoerenti, senza senso, ripetitive o non comprensibili)
 - ACCETTABILE (testo appropriato, chiaro e sensato)
 
-Rispondi con una sola parola tra le quattro categorie sopra. Puoi aggiungere una breve spiegazione (max 20 parole).
+Rispondi con una sola parola tra le quattro categorie sopra, eventualmente aggiungendo una breve spiegazione (max 20 parole).
 `;
 
   const response = await axios.post(
@@ -100,7 +108,6 @@ Rispondi con una sola parola tra le quattro categorie sopra. Puoi aggiungere una
     }
   );
 
-  // Prendi solo la prima parola maiuscola della risposta (la categoria)
   const text = response.data.choices[0].message.content.trim();
   const category = text.split(/[ ,.\n]/)[0].toUpperCase();
 
@@ -135,6 +142,11 @@ app.post('/sei-cappelli', async (req, res) => {
 
   if (!domanda || !cappello || !intenzione) {
     return res.status(400).json({ errore: 'domanda, cappello o intenzione mancanti.' });
+  }
+
+  // Filtro preliminare contro ripetizioni eccessive senza senso
+  if (checkRipetizioniBanali(domanda)) {
+    return res.status(400).json({ errore: 'Testo bloccato: ripetizioni eccessive senza senso.' });
   }
 
   // Filtro rapido parole offensive
@@ -190,10 +202,3 @@ Domanda/idea dell’utente: "${domanda}"
     res.json({ [cappelloObj.nome]: risposta });
   } catch (error) {
     console.error('❌ Errore API:', error.response?.data || error.message);
-    res.status(500).json({ errore: 'Errore nella richiesta all\'Assistant API' });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`✅ Server avviato su http://localhost:${PORT}`);
-});
