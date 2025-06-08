@@ -5,23 +5,10 @@ require('dotenv').config();
 const leoProfanity = require('leo-profanity');
 const badwordsIt = require('./badwords-it');
 
-// Carica il dizionario inglese di default
+// Carica dizionario inglese e italiano + personalizzate
 leoProfanity.loadDictionary();
-
-// Aggiunge il dizionario italiano
 leoProfanity.add(leoProfanity.getDictionary('it'));
-
-// Aggiunge parole personalizzate (opzionale)
 leoProfanity.add(badwordsIt);
-
-// Ora la lista contiene inglese + italiano + personalizzate
-// Puoi usarla così:
-const listaParolacce = leoProfanity.list();
-
-// Funzione per verificare una parola
-function isBadWord(word) {
-  return leoProfanity.check(word);
-}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -77,6 +64,49 @@ const intenzioni = {
   }
 };
 
+// Funzione chiamata per la moderazione semantica approfondita
+async function callSemanticModeration(testo) {
+  const prompt = `
+Sei un moderatore di contenuti esperto che valuta testi in italiano.
+
+Leggi questo testo:
+
+"${testo}"
+
+Classifica il contenuto come uno dei seguenti:
+
+- OFFENSIVO (contenuti volgari, violenti, discriminatori, sessualmente espliciti)
+- POTENZIALMENTE RISCHIOSO (contenuti ambigui o borderline)
+- NO-SENSE (frasi incoerenti, senza senso o non comprensibili)
+- ACCETTABILE (testo appropriato, chiaro e sensato)
+
+Rispondi con una sola parola tra le quattro categorie sopra. Puoi aggiungere una breve spiegazione (max 20 parole).
+`;
+
+  const response = await axios.post(
+    'https://api.openai.com/v1/chat/completions',
+    {
+      model: 'gpt-3.5-turbo',
+      messages: [
+        { role: 'system', content: 'Sei un moderatore di contenuti.' },
+        { role: 'user', content: prompt }
+      ]
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  // Prendi solo la prima parola maiuscola della risposta (la categoria)
+  const text = response.data.choices[0].message.content.trim();
+  const category = text.split(/[ ,.\n]/)[0].toUpperCase();
+
+  return { category, text };
+}
+
 async function callOpenAI(prompt) {
   const response = await axios.post(
     'https://api.openai.com/v1/chat/completions',
@@ -103,21 +133,33 @@ async function callOpenAI(prompt) {
 app.post('/sei-cappelli', async (req, res) => {
   const { domanda, cappello, intenzione } = req.body;
 
-  // **Filtro parolacce**: blocca la richiesta se nella domanda ci sono parole offensive
-  if (leoProfanity.check(domanda)) {
-    return res.status(400).json({ errore: 'La domanda contiene parole non consentite.' });
-  }
-
-  // ✅ Log delle variabili ricevute (visibili su Render)
-  console.log('📥 Richiesta ricevuta da Storyline');
-  console.log('🧠 Domanda:', domanda);
-  console.log('🎩 Cappello:', cappello);
-  console.log('🎯 Intenzione:', intenzione);
-
   if (!domanda || !cappello || !intenzione) {
     return res.status(400).json({ errore: 'domanda, cappello o intenzione mancanti.' });
   }
 
+  // Filtro rapido parole offensive
+  if (leoProfanity.check(domanda)) {
+    // Se il filtro rapido trova parolacce, fai la moderazione semantica approfondita
+    try {
+      const { category, text } = await callSemanticModeration(domanda);
+
+      if (category === 'OFFENSIVO' || category === 'NO-SENSE') {
+        return res.status(400).json({ errore: `Testo bloccato: ${category}. ${text}` });
+      } else if (category === 'POTENZIALMENTE') {
+        // Potresti scegliere di bloccare o avvisare
+        return res.status(400).json({ errore: `Testo potenzialmente rischioso. ${text}` });
+      }
+      // Se accettabile, procedi
+    } catch (error) {
+      console.error('Errore nella moderazione semantica:', error.message);
+      return res.status(500).json({ errore: 'Errore nel controllo del contenuto.' });
+    }
+  } else {
+    // Se filtro rapido pulito, puoi fare comunque la moderazione semantica (opzionale)
+    // oppure procedere direttamente
+  }
+
+  // Verifica cappello e intenzione validi
   const cappelloObj = cappelli.find(c => c.nome === cappello.toLowerCase());
   if (!cappelloObj) {
     return res.status(400).json({ errore: 'cappello non valido.' });
@@ -129,6 +171,7 @@ app.post('/sei-cappelli', async (req, res) => {
     return res.status(400).json({ errore: 'intenzione non valida.' });
   }
 
+  // Costruzione prompt per OpenAI
   const prompt = `
 Intenzione: ${intenzioneLower}
 Obiettivo: ${intenzioni[intenzioneLower].descrizione}
@@ -140,7 +183,6 @@ Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzioneLower].cappel
 Domanda/idea dell’utente: "${domanda}"
 `;
 
-  // ✅ Log anche del prompt generato (utile per debugging)
   console.log("📄 Prompt generato per OpenAI:\n", prompt);
 
   try {
