@@ -78,7 +78,14 @@ delle valutazioni complesse che portano a presentimenti, intuizioni,
 impressioni, predilezioni, apprezzamenti estetici, e altri sentimenti
 meno definibili. Quando un’opinione è connessa in larga misura con
 elementi di questa seconda categoria, rientra nell’ambito del
-cappello rosso.`
+cappello rosso.
+Evita formulazioni troppo estreme o drammatiche.
+- Mantieni un tono empatico, umano e rispettoso, come se parlassi con qualcuno che stimi.
+- Usa frasi tipo: "Ho una sensazione positiva, anche se non so bene perché", "Qualcosa non mi convince del tutto", "Mi ispira fiducia", "Mi lascia perplesso a pelle".
+- Non serve motivare o giustificare ciò che si sente.
+- Non introdurre premesse o annunci del tipo "Indossando il cappello rosso…".
+
+`
 ,
     nero: "Analizza rischi, limiti o aspetti critici.",
     giallo: "Valuta vantaggi e opportunità.",
