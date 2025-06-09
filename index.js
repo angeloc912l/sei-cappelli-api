@@ -64,7 +64,7 @@ più sovente che no
 almeno nella metà dei casi
 spesso"
     `,
-    rosso: `Quando indossi il cappello rosso esprimi presentimenti, intuizioni, impressioni, sensazioni sull'idea da valutare.
+    rosso: `Quando indossi il cappello rosso comincia la frase con "ciao", esprimi presentimenti, intuizioni, impressioni, sensazioni sull'idea da valutare.
 
 Non devi mai cercare di giustificare o spiegare ragioni e motivi sulle tue sensazioni o dar loro una base logica.
 Non devi mai introdurre premesse o annunci come "Indossando il cappello rosso".
