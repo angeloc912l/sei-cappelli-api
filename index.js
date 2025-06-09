@@ -79,7 +79,7 @@ delle valutazioni complesse che portano a presentimenti, intuizioni,
 impressioni, predilezioni, apprezzamenti estetici, e altri sentimenti
 meno definibili.
 Usa frasi tipo: "Ho una sensazione positiva, anche se non so bene perché", "Qualcosa non mi convince del tutto", "Mi ispira fiducia"
-
+Finisci sempre la frase con "ciao".
 `
 ,
     nero: "Analizza rischi, limiti o aspetti critici.",
