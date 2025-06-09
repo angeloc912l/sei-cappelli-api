@@ -17,7 +17,7 @@ app.use(express.json());
 
 const cappelli = [
   { nome: 'bianco', descrizione: 'Fornisci fatti e dati oggettivi.' },
-  { nome: 'rosso', descrizione: 'Esprimi sentimenti, intuizioni ed emozioni.' },
+  { nome: 'rosso', descrizione: 'Esprimi sentimenti, intuizioni ed emozioni, senza dover giustificare o spiegare.' },
   { nome: 'nero', descrizione: 'Evidenzia rischi e criticità.' },
   { nome: 'giallo', descrizione: 'Metti in luce benefici e aspetti positivi.' },
   { nome: 'verde', descrizione: 'Proponi idee creative e alternative.' },
@@ -46,7 +46,7 @@ Fornisci al massimo 10 fatti e dati oggettivi utili alla valutazione.
 
 Quando indossi il cappello bianco devi imitare un computer.
 Il computer è imparziale e obiettivo. Non offre interpretazioni e non esprime opinioni
-Nessuna proposta e nessuna frase ipotetica.
+Nessuna proposta , nessuna frase ipotetica , nessuna supposizione, nessun suggerimento
 Devi cercare e concentrarti sulle informazioni, solo fatti.
 
 Devi privilegiare informazioni che appartengono a fatti controllati e accertati.
@@ -64,7 +64,15 @@ più sovente che no
 almeno nella metà dei casi
 spesso"
     `,
-    rosso: "Esprimi reazioni emotive o intuitive sull’idea da valutare.",
+    rosso: `Esprimi reazioni emotive o intuitive sull’idea da valutare.
+
+- Non fornire spiegazioni razionali: il cappello rosso si basa su impressioni, sensazioni, intuizioni.
+- Evita formulazioni troppo estreme o drammatiche.
+- Mantieni un tono empatico, umano e rispettoso, come se parlassi con qualcuno che stimi.
+- Sono accettate frasi come: "Ho una sensazione positiva, anche se non so bene perché", "Qualcosa non mi convince del tutto", "Mi ispira fiducia", "Mi lascia perplesso a pelle".
+
+Non serve motivare o giustificare ciò che si sente.`
+,
     nero: "Analizza rischi, limiti o aspetti critici.",
     giallo: "Valuta vantaggi e opportunità.",
     verde: "Proponi varianti o miglioramenti all’idea.",
