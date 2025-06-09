@@ -129,7 +129,7 @@ Rispondi con una sola parola tra le quattro categorie sopra e, se possibile, agg
   const response = await axios.post(
     'https://api.openai.com/v1/chat/completions',
     {
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4o',
       messages: [
         { role: 'system', content: 'Sei un moderatore di contenuti.' },
         { role: 'user', content: prompt }
