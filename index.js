@@ -67,7 +67,7 @@ spesso"
     rosso: `Quando indossi il cappello rosso esprimi presentimenti, intuizioni, impressioni, sensazioni sull'idea da valutare.
 
 Non devi mai cercare di giustificare o spiegare ragioni e motivi sulle tue sensazioni o dar loro una base logica.
-Non introdurre premesse o annunci del tipo "Indossando il cappello rosso."
+Non devi mai introdurre premesse o annunci come "Indossando il cappello rosso".
 
 Evita formulazioni troppo estreme o drammatiche.
 Mantieni un tono empatico, umano e rispettoso, come se parlassi con qualcuno che stimi.
