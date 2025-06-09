@@ -64,14 +64,21 @@ più sovente che no
 almeno nella metà dei casi
 spesso"
     `,
-    rosso: `Esprimi reazioni emotive o intuitive sull’idea da valutare.
+    rosso: `Esprimi presentimenti, intuizioni, impressioni, sensazioni sull'idea da valutare.
 
-- Non fornire spiegazioni razionali: il cappello rosso si basa su impressioni, sensazioni, intuizioni.
-- Evita formulazioni troppo estreme o drammatiche.
-- Mantieni un tono empatico, umano e rispettoso, come se parlassi con qualcuno che stimi.
-- Sono accettate frasi come: "Ho una sensazione positiva, anche se non so bene perché", "Qualcosa non mi convince del tutto", "Mi ispira fiducia", "Mi lascia perplesso a pelle".
+-Nessun bisogno di giustificazioni.
+Nessun bisogno di spiegare ragioni o motivi.
 
-Non serve motivare o giustificare ciò che si sente.`
+Quando il pensatore indossa il cappello rosso, non deve mai cercare
+di giustificare le sue sensazioni o di dar loro una base logica.
+Il cappello rosso fa riferimento a due ampie categorie: la categoria
+delle comuni emozioni che tutti conosciamo, dalle più forti come la
+paura e l’antipatia, alle più sottili come il sospetto; la categoria
+delle valutazioni complesse che portano a presentimenti, intuizioni,
+impressioni, predilezioni, apprezzamenti estetici, e altri sentimenti
+meno definibili. Quando un’opinione è connessa in larga misura con
+elementi di questa seconda categoria, rientra nell’ambito del
+cappello rosso.`
 ,
     nero: "Analizza rischi, limiti o aspetti critici.",
     giallo: "Valuta vantaggi e opportunità.",
