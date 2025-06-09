@@ -38,10 +38,10 @@ const intenzioni = {
     }
   },
   valutazione: {
-  descrizione: "L’utente desidera valutare l’efficacia o validità di un’idea o situazione.",
-  guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
-  cappelli: {
-    bianco: `
+    descrizione: "L’utente desidera valutare l’efficacia o validità di un’idea o situazione.",
+    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
+    cappelli: {
+      bianco: `
 Fornisci al massimo 10 fatti e dati oggettivi utili alla valutazione.
 
 Quando indossi il cappello bianco devi imitare un computer.
@@ -62,9 +62,9 @@ generalmente vero
 in genere
 più sovente che no
 almeno nella metà dei casi
-spesso"
-    `,
-    rosso: `Quando indossi il cappello rosso comincia la frase con "ciao", esprimi presentimenti, intuizioni, impressioni, sensazioni sull'idea da valutare.
+spesso`
+      ,
+      rosso: `Quando indossi il cappello rosso esprimi presentimenti, intuizioni, impressioni, sensazioni sull'idea da valutare.
 
 Non devi mai cercare di giustificare o spiegare ragioni e motivi sulle tue sensazioni o dar loro una base logica.
 Non devi mai introdurre premesse o annunci come "Indossando il cappello rosso".
@@ -78,16 +78,13 @@ paura e l’antipatia, alle più sottili come il sospetto; la categoria
 delle valutazioni complesse che portano a presentimenti, intuizioni,
 impressioni, predilezioni, apprezzamenti estetici, e altri sentimenti
 meno definibili.
-Usa frasi tipo: "Ho una sensazione positiva, anche se non so bene perché", "Qualcosa non mi convince del tutto", "Mi ispira fiducia"
-Finisci sempre la frase con "ciao".
-`
-,
-    nero: "Analizza rischi, limiti o aspetti critici.",
-    giallo: "Valuta vantaggi e opportunità.",
-    verde: "Proponi varianti o miglioramenti all’idea.",
-    blu: "Riassumi i punti chiave per trarre una conclusione valutativa."
-  }
-},
+Usa frasi tipo: "Ho una sensazione positiva, anche se non so bene perché", "Qualcosa non mi convince del tutto", "Mi ispira fiducia"`,
+      nero: "Analizza rischi, limiti o aspetti critici.",
+      giallo: "Valuta vantaggi e opportunità.",
+      verde: "Proponi varianti o miglioramenti all’idea.",
+      blu: "Riassumi i punti chiave per trarre una conclusione valutativa."
+    }
+  },
   generazione: {
     descrizione: "L’utente desidera generare nuove idee o alternative creative.",
     guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, favorisci la creatività anche con proposte fuori dagli schemi.",
@@ -149,18 +146,19 @@ Rispondi con una sola parola tra le quattro categorie sopra e, se possibile, agg
   return { category, text };
 }
 
-async function callOpenAI(prompt) {
+async function callOpenAI(prompt, temperature = 0) {
   const response = await axios.post(
     'https://api.openai.com/v1/chat/completions',
     {
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4o',
       messages: [
         {
           role: 'system',
           content: 'Sei un assistente che ragiona secondo la tecnica dei Sei Cappelli di De Bono.'
         },
         { role: 'user', content: prompt }
-      ]
+      ],
+      temperature: temperature
     },
     {
       headers: {
@@ -220,8 +218,11 @@ Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzioneLower].cappel
 Domanda/idea dell’utente: "${domanda}"
 `;
 
+  // Imposta temperatura a 0.8 solo se cappello è rosso e intenzione è valutazione
+  const temperature = (cappelloObj.nome === 'rosso' && intenzioneLower === 'valutazione') ? 0.8 : 0;
+
   try {
-    const risposta = await callOpenAI(prompt);
+    const risposta = await callOpenAI(prompt, temperature);
     res.json({ [cappelloObj.nome]: risposta });
   } catch (error) {
     console.error('❌ Errore API:', error.response?.data || error.message);
