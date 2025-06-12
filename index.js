@@ -42,8 +42,8 @@ const intenzioni = {
     descrizione: "L’utente desidera valutare l’efficacia o validità di un’idea o situazione.",
     guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
     cappelli: {
-      bianco: "Fornisci al massimo 10 fatti e dati oggettivi utili alla valutazione.",
-      rosso: "Esprimi intuizioni e sensazioni sulla validità dell’idea.",
+      bianco: "Fornisci al massimo 10 fatti e dati oggettivi utili alla valutazione.Quando indossi il cappello bianco devi imitare un computer.Il computer è imparziale e obiettivo.Non offre proposte, interpretazioni e non esprime opinioni.Devi cercare e concentrarti sulle informazioni, solo fatti.Devi privilegiare informazioni che appartengono a fatti controllati e accertati.Solo se fatti controllati e accertati non sono sufficienti, puoi fornire fatti creduti, cioè considerati veri ma non controllati fino in fondo. Quest'ultimi fatti (fatti creduti, considerati veri ma non controllati) devono essere forniti se provvisti di una «cornice» appropriata che indichi il loro grado di verosimiglianza.Una scala della verosomiglianza accettata è la seguente:sempre vero, quasi sempre vero, generalmente vero, vero almeno nella metà dei casi, spesso",
+m     rosso: "Esprimi intuizioni e sensazioni sulla validità dell’idea.",
       nero: "Analizza rischi, limiti o aspetti critici.",
       giallo: "Valuta vantaggi e opportunità.",
       verde: "Proponi varianti o miglioramenti all’idea.",
