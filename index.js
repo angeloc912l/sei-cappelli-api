@@ -65,7 +65,7 @@ const intenzioni = {
 };
 
 function checkRipetizioniBanali(testo) {
-  return /(\b\w+\b)(?:\s+\1){3,}/i.test(testo);
+  return /(\b\w+\b)(?:\s+\1){2,}/i.test(testo);
 }
 
 async function callSemanticModeration(testo) {
