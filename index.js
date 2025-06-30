@@ -27,8 +27,8 @@ const cappelli = [
 
 const intenzioni = {
   chiarimento: {
-    descrizione: "L’utente desidera chiarire e comprendere meglio una situazione o un problema.",
-    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, fornisci una risposta che aiuti a fare luce sull’argomento in modo semplice, ordinato e strutturato.",
+    descrizione: "L'utente desidera chiarire e comprendere meglio una situazione o un problema.",
+    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, fornisci una risposta che aiuti a fare luce sull'argomento in modo semplice, ordinato e strutturato.",
     cappelli: {
       bianco: "Fornisci 5 fatti e dati oggettivi rilevanti.",
       rosso: "Esprimi sentimenti, intuizioni o emozioni che potrebbero emergere in chi cerca chiarezza.",
@@ -39,19 +39,19 @@ const intenzioni = {
     }
   },
   valutazione: {
-    descrizione: "L’utente desidera valutare l’efficacia o validità di un’idea o situazione.",
-    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all’analisi e al giudizio, con esempi concreti.",
+    descrizione: "L'utente desidera valutare l'efficacia o validità di un'idea o situazione.",
+    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all'analisi e al giudizio, con esempi concreti.",
     cappelli: {
       bianco: "Fornisci direttamente la lista di al massimo 5 fatti e dati oggettivi utili alla valutazione, vai a capo di 2 righe dopo ogni fatto. Quando indossi il cappello bianco devi imitare un computer.Il computer è imparziale e obiettivo.Non offre proposte, interpretazioni e non esprime opinioni.Devi cercare e concentrarti sulle informazioni, solo fatti.Devi privilegiare informazioni che appartengono a fatti controllati e accertati.Solo se fatti controllati e accertati non sono sufficienti, puoi fornire fatti creduti, cioè considerati veri ma non controllati fino in fondo. Quest'ultimi fatti (fatti creduti, considerati veri ma non controllati) devono essere forniti se provvisti di una «cornice» appropriata che indichi il loro grado di verosimiglianza.Una scala della verosomiglianza accettata è la seguente:sempre vero, quasi sempre vero, generalmente vero, vero almeno nella metà dei casi, spesso. Restituisci solo una lista numerata, senza introduzioni come 'Cappello Bianco:', conclusioni o spiegazioni",
-      rosso: 'Quando indossi il cappello rosso esprimi presentimenti, intuizioni, impressioni, sensazioni sull idea da valutare. Non devi mai cercare di giustificare o spiegare ragioni e motivi sulle tue sensazioni o dar loro una base logica. Non introdurre premesse o annunci del tipo "Indossando il cappello rosso." Evita formulazioni troppo estreme o drammatiche. Mantieni un tono empatico, umano e rispettoso, come se parlassi con qualcuno che stimi. Puoi fare riferimento a due ampie categorie: la categoria delle comuni emozioni che tutti conosciamo, dalle più forti come la paura e l’antipatia, alle più sottili come il sospetto; la categoria delle valutazioni complesse che portano a presentimenti, intuizioni, impressioni, predilezioni, apprezzamenti estetici, e altri sentimenti meno definibili. Usa frasi tipo: "Ho una sensazione positiva, anche se non so bene perché", "Qualcosa non mi convince del tutto", "Mi ispira fiducia" Vai a capo dopo ogni punto e limitati a un massimo di 5 punti',
+      rosso: 'Quando indossi il cappello rosso esprimi presentimenti, intuizioni, impressioni, sensazioni sull idea da valutare. Non devi mai cercare di giustificare o spiegare ragioni e motivi sulle tue sensazioni o dar loro una base logica. Non introdurre premesse o annunci del tipo "Indossando il cappello rosso." Evita formulazioni troppo estreme o drammatiche. Mantieni un tono empatico, umano e rispettoso, come se parlassi con qualcuno che stimi. Puoi fare riferimento a due ampie categorie: la categoria delle comuni emozioni che tutti conosciamo, dalle più forti come la paura e l'antipatia, alle più sottili come il sospetto; la categoria delle valutazioni complesse che portano a presentimenti, intuizioni, impressioni, predilezioni, apprezzamenti estetici, e altri sentimenti meno definibili. Usa frasi tipo: "Ho una sensazione positiva, anche se non so bene perché", "Qualcosa non mi convince del tutto", "Mi ispira fiducia" Vai a capo dopo ogni punto e limitati a un massimo di 5 punti',
       nero: "Quando indossi il cappello nero devi individuare ciò che è falso, scorretto o sbagliato. Metti in luce ciò che è in disaccordo con l esperienza e il sapere comuni. Spieghi perché una cosa non potrà funzionare. Addita i rischi e i pericoli. Indica le lacune di un progetto. Puoi mettere in evidenza errori di procedura e di metodo nello svolgimento del pensiero. Puoi stabilire paragoni con l esperienza passata per vedere quale accordo vi sia tra questa e l idea in esame. Puoi proiettare l idea nel futuro per valutarne possibilità di errore o fallimento. Puoi porre domande negative. Sulla base di queste analisi fornisci direttamente la lista di al massimo 5 valutazioni negative.",
       giallo: "Quando indossi il cappello giallo fornisci la lista di al massimo 5 punti ( restituisci solo una lista numerata, senza introduzioni, conclusioni o spiegazioni ): per sviluppare ogni punto devi essere positivo e costruttivo, devi cercare e valutare guadagni e benefici e poi devi cercare una base logica su cui fondarli. Offri inoltre suggerimenti, proposte, opportunità concrete ed efficienti.",
-      verde: "Proponi varianti o miglioramenti all’idea.",
+      verde: "Proponi varianti o miglioramenti all'idea.",
       blu: "Riassumi i punti chiave per trarre una conclusione valutativa."
     }
   },
   generazione: {
-    descrizione: "L’utente desidera generare nuove idee o alternative creative.",
+    descrizione: "L'utente desidera generare nuove idee o alternative creative.",
     guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, favorisci la creatività anche con proposte fuori dagli schemi.",
     cappelli: {
       bianco: "Fornisci almeno 10 dati oggettivi come base per nuove idee.",
@@ -121,10 +121,15 @@ async function callOpenAI(prompt, temperature = 0) {
 }
 
 app.post('/sei-cappelli', async (req, res) => {
-  const { domanda, cappello, intenzione } = req.body;
+  const { domanda, cappello, intenzione, sessionUUID } = req.body;
 
   if (!domanda || !cappello || !intenzione) {
     return res.status(400).json({ errore: 'domanda, cappello o intenzione mancanti.' });
+  }
+
+  // Log della sessione (opzionale)
+  if (sessionUUID) {
+    console.log(`Richiesta da sessione: ${sessionUUID}`);
   }
 
   // Controllo parolacce
@@ -176,7 +181,7 @@ ${intenzioni[intenzioneLower].guidaGenerale}
 
 Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzioneLower].cappelli[cappelloObj.nome]}
 
-Domanda/idea dell’utente: "${domanda}"
+Domanda/idea dell'utente: "${domanda}"
 `;
 
   const temperature = (cappelloObj.nome === 'rosso' && intenzioneLower === 'valutazione') ? 0.8 : 0;
