@@ -219,6 +219,7 @@ Domanda/idea dell'utente: "${domanda}"
         
         // Log del JSON completo per il futuro database
         console.log('JSON completo per database:', JSON.stringify(rispostaJSON));
+        console.log('RISPOSTA PER STORYLINE:', rispostaPerStoryline);
         
         const totalTime = Date.now();
         console.log(`[${new Date().toISOString()}] TEMPO TOTALE PARSING: ${totalTime - startTime}ms`);
