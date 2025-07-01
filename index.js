@@ -192,7 +192,13 @@ Domanda/idea dell'utente: "${domanda}"
     // Parsing JSON per il cappello bianco
     if (cappelloObj.nome === 'bianco' && intenzioneLower === 'valutazione') {
       try {
-        const rispostaJSON = JSON.parse(risposta);
+        // Pulisci la risposta dai markdown code blocks
+        let rispostaPulita = risposta;
+        if (risposta.includes('```json')) {
+          rispostaPulita = risposta.replace(/```json\s*/, '').replace(/\s*```/, '');
+        }
+        
+        const rispostaJSON = JSON.parse(rispostaPulita);
         // Estrai solo il campo risposta per Storyline
         const rispostaPerStoryline = rispostaJSON.risposta;
         
@@ -202,6 +208,7 @@ Domanda/idea dell'utente: "${domanda}"
         res.json({ [cappelloObj.nome]: rispostaPerStoryline });
       } catch (jsonError) {
         console.error('Errore nel parsing JSON:', jsonError.message);
+        console.error('Risposta ricevuta:', risposta);
         // Fallback: invia la risposta originale se il parsing fallisce
         res.json({ [cappelloObj.nome]: risposta });
       }
