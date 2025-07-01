@@ -127,6 +127,10 @@ app.post('/sei-cappelli', async (req, res) => {
     return res.status(400).json({ errore: 'domanda, cappello o intenzione mancanti.' });
   }
 
+  // Log dettagliato per debug
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] NUOVA RICHIESTA - Cappello: ${cappello}, Intenzione: ${intenzione}, Session: ${sessionUUID || 'N/A'}`);
+
   // Log della sessione (opzionale)
   if (sessionUUID) {
     console.log(`Richiesta da sessione: ${sessionUUID}`);
@@ -205,6 +209,7 @@ Domanda/idea dell'utente: "${domanda}"
         // Log del JSON completo per il futuro database
         console.log('JSON completo per database:', JSON.stringify(rispostaJSON));
         
+        console.log(`[${new Date().toISOString()}] RISPOSTA INVIATA - Cappello: ${cappelloObj.nome}`);
         res.json({ [cappelloObj.nome]: rispostaPerStoryline });
       } catch (jsonError) {
         console.error('Errore nel parsing JSON:', jsonError.message);
@@ -214,6 +219,7 @@ Domanda/idea dell'utente: "${domanda}"
       }
     } else {
       // Per tutti gli altri cappelli, comportamento normale
+      console.log(`[${new Date().toISOString()}] RISPOSTA INVIATA - Cappello: ${cappelloObj.nome}`);
       res.json({ [cappelloObj.nome]: risposta });
     }
   } catch (error) {
