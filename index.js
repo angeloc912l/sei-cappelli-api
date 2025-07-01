@@ -42,7 +42,7 @@ const intenzioni = {
     descrizione: "L'utente desidera valutare l'efficacia o validità di un'idea o situazione.",
     guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, dai una risposta orientata all'analisi e al giudizio, con esempi concreti.",
     cappelli: {
-      bianco: "Fornisci direttamente la lista di al massimo 5 fatti e dati oggettivi utili alla valutazione, vai a capo di 2 righe dopo ogni fatto. Quando indossi il cappello bianco devi imitare un computer.Il computer è imparziale e obiettivo.Non offre proposte, interpretazioni e non esprime opinioni.Devi cercare e concentrarti sulle informazioni, solo fatti.Devi privilegiare informazioni che appartengono a fatti controllati e accertati.Solo se fatti controllati e accertati non sono sufficienti, puoi fornire fatti creduti, cioè considerati veri ma non controllati fino in fondo. Quest'ultimi fatti (fatti creduti, considerati veri ma non controllati) devono essere forniti se provvisti di una «cornice» appropriata che indichi il loro grado di verosimiglianza.Una scala della verosomiglianza accettata è la seguente:sempre vero, quasi sempre vero, generalmente vero, vero almeno nella metà dei casi, spesso. Restituisci solo una lista numerata, senza introduzioni come 'Cappello Bianco:', conclusioni o spiegazioni",
+      bianco: "Rispondi sempre in formato JSON valido con questa struttura esatta:\n{\n  \"risposta\": \"Testo completo della risposta con tutti i 5 fatti\",\n  \"fatti_oggettivi\": [\n    \"1. [descrizione del fatto]\",\n    \"2. [descrizione del fatto]\", \n    \"3. [descrizione del fatto]\",\n    \"4. [descrizione del fatto]\",\n    \"5. [descrizione del fatto]\"\n  ]\n}\n\nFornisci direttamente la lista di 5 fatti e dati oggettivi utili alla valutazione, vai a capo di 2 righe dopo ogni fatto. Quando indossi il cappello bianco devi imitare un computer.Il computer è imparziale e obiettivo.Non offre proposte, interpretazioni e non esprime opinioni.Devi cercare e concentrarti sulle informazioni, solo fatti.Devi privilegiare informazioni che appartengono a fatti controllati e accertati.Solo se fatti controllati e accertati non sono sufficienti, puoi fornire fatti creduti, cioè considerati veri ma non controllati fino in fondo. Quest'ultimi fatti (fatti creduti, considerati veri ma non controllati) devono essere forniti se provvisti di una «cornice» appropriata che indichi il loro grado di verosimiglianza.Una scala della verosomiglianza accettata è la seguente:sempre vero, quasi sempre vero, generalmente vero, vero almeno nella metà dei casi, spesso. Restituisci solo una lista numerata, senza introduzioni come 'Cappello Bianco:', conclusioni o spiegazioni",
       rosso: 'Quando indossi il cappello rosso esprimi presentimenti, intuizioni, impressioni, sensazioni sull idea da valutare. Non devi mai cercare di giustificare o spiegare ragioni e motivi sulle tue sensazioni o dar loro una base logica. Non introdurre premesse o annunci del tipo "Indossando il cappello rosso." Evita formulazioni troppo estreme o drammatiche. Mantieni un tono empatico, umano e rispettoso, come se parlassi con qualcuno che stimi. Puoi fare riferimento a due ampie categorie: la categoria delle comuni emozioni che tutti conosciamo, dalle più forti come la paura e l’antipatia, alle più sottili come il sospetto; la categoria delle valutazioni complesse che portano a presentimenti, intuizioni, impressioni, predilezioni, apprezzamenti estetici, e altri sentimenti meno definibili. Usa frasi tipo: "Ho una sensazione positiva, anche se non so bene perché", "Qualcosa non mi convince del tutto", "Mi ispira fiducia" Vai a capo dopo ogni punto e limitati a un massimo di 5 punti',
       nero: "Quando indossi il cappello nero devi individuare ciò che è falso, scorretto o sbagliato. Metti in luce ciò che è in disaccordo con l esperienza e il sapere comuni. Spieghi perché una cosa non potrà funzionare. Addita i rischi e i pericoli. Indica le lacune di un progetto. Puoi mettere in evidenza errori di procedura e di metodo nello svolgimento del pensiero. Puoi stabilire paragoni con l esperienza passata per vedere quale accordo vi sia tra questa e l idea in esame. Puoi proiettare l idea nel futuro per valutarne possibilità di errore o fallimento. Puoi porre domande negative. Sulla base di queste analisi fornisci direttamente la lista di al massimo 5 valutazioni negative.",
       giallo: "Quando indossi il cappello giallo fornisci la lista di al massimo 5 punti ( restituisci solo una lista numerata, senza introduzioni, conclusioni o spiegazioni ): per sviluppare ogni punto devi essere positivo e costruttivo, devi cercare e valutare guadagni e benefici e poi devi cercare una base logica su cui fondarli. Offri inoltre suggerimenti, proposte, opportunità concrete ed efficienti.",
@@ -188,7 +188,27 @@ Domanda/idea dell'utente: "${domanda}"
 
   try {
     const risposta = await callOpenAI(prompt, temperature);
-    res.json({ [cappelloObj.nome]: risposta });
+    
+    // Parsing JSON per il cappello bianco
+    if (cappelloObj.nome === 'bianco' && intenzioneLower === 'valutazione') {
+      try {
+        const rispostaJSON = JSON.parse(risposta);
+        // Estrai solo il campo risposta per Storyline
+        const rispostaPerStoryline = rispostaJSON.risposta;
+        
+        // Log del JSON completo per il futuro database
+        console.log('JSON completo per database:', JSON.stringify(rispostaJSON));
+        
+        res.json({ [cappelloObj.nome]: rispostaPerStoryline });
+      } catch (jsonError) {
+        console.error('Errore nel parsing JSON:', jsonError.message);
+        // Fallback: invia la risposta originale se il parsing fallisce
+        res.json({ [cappelloObj.nome]: risposta });
+      }
+    } else {
+      // Per tutti gli altri cappelli, comportamento normale
+      res.json({ [cappelloObj.nome]: risposta });
+    }
   } catch (error) {
     console.error('Errore nell\'interazione con OpenAI:', error.message);
     res.status(500).json({ errore: 'Errore nella generazione della risposta.' });
