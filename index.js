@@ -235,11 +235,41 @@ Domanda/idea dell'utente: "${domanda}"
         console.log(`[${new Date().toISOString()}] PULIZIA MARKDOWN: ${cleanTime - startTime}ms`);
         
         const rispostaJSON = JSON.parse(rispostaPulita);
+        const rispostaPerStoryline = rispostaJSON.risposta;
+        
+        // Salva su DB solo se sessionUUID è presente
+        if (sessionUUID) {
+          try {
+            const now = new Date();
+            await db.query(
+              `INSERT INTO interazioni_cappelli
+                (session_uuid, timestamp, domanda, cappello, intenzione, risposta_json, risposta_testo, errore, aggiornato_il)
+               VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)
+               ON DUPLICATE KEY UPDATE
+                 domanda = VALUES(domanda),
+                 risposta_json = VALUES(risposta_json),
+                 risposta_testo = VALUES(risposta_testo),
+                 errore = NULL,
+                 aggiornato_il = VALUES(aggiornato_il)`,
+              [
+                sessionUUID,
+                now,
+                domanda,
+                cappello,
+                intenzione,
+                JSON.stringify(rispostaJSON),
+                rispostaPerStoryline,
+                now
+              ]
+            );
+            console.log('✅ Risposta salvata nel database');
+          } catch (dbError) {
+            console.error('❌ Errore salvataggio DB:', dbError.message);
+          }
+        }
+        
         const parseTime = Date.now();
         console.log(`[${new Date().toISOString()}] PARSING JSON: ${parseTime - cleanTime}ms`);
-        
-        // Estrai solo il campo risposta per Storyline
-        const rispostaPerStoryline = rispostaJSON.risposta;
         
         // Log del JSON completo per il futuro database
         console.log('JSON completo per database:', JSON.stringify(rispostaJSON));
