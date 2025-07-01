@@ -191,24 +191,37 @@ Domanda/idea dell'utente: "${domanda}"
   const temperature = (cappelloObj.nome === 'rosso' && intenzioneLower === 'valutazione') ? 0.8 : 0;
 
   try {
+    const apiStartTime = Date.now();
     const risposta = await callOpenAI(prompt, temperature);
+    const apiEndTime = Date.now();
+    console.log(`[${new Date().toISOString()}] TEMPO CHIAMATA API: ${apiEndTime - apiStartTime}ms`);
     
     // Parsing JSON per il cappello bianco
     if (cappelloObj.nome === 'bianco' && intenzioneLower === 'valutazione') {
       try {
+        const startTime = Date.now();
+        
         // Pulisci la risposta dai markdown code blocks
         let rispostaPulita = risposta;
         if (risposta.includes('```json')) {
           rispostaPulita = risposta.replace(/```json\s*/, '').replace(/\s*```/, '');
         }
         
+        const cleanTime = Date.now();
+        console.log(`[${new Date().toISOString()}] PULIZIA MARKDOWN: ${cleanTime - startTime}ms`);
+        
         const rispostaJSON = JSON.parse(rispostaPulita);
+        const parseTime = Date.now();
+        console.log(`[${new Date().toISOString()}] PARSING JSON: ${parseTime - cleanTime}ms`);
+        
         // Estrai solo il campo risposta per Storyline
         const rispostaPerStoryline = rispostaJSON.risposta;
         
         // Log del JSON completo per il futuro database
         console.log('JSON completo per database:', JSON.stringify(rispostaJSON));
         
+        const totalTime = Date.now();
+        console.log(`[${new Date().toISOString()}] TEMPO TOTALE PARSING: ${totalTime - startTime}ms`);
         console.log(`[${new Date().toISOString()}] RISPOSTA INVIATA - Cappello: ${cappelloObj.nome}`);
         
         res.json({ [cappelloObj.nome]: rispostaPerStoryline });
