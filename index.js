@@ -5,6 +5,30 @@ require('dotenv').config();
 const leoProfanity = require('leo-profanity');
 const badwordsIt = require('./badwords-it');
 const callAssistantAPI = require('./green-hat');
+const mysql = require('mysql2/promise'); // <-- Poi importa mysql2
+
+// ... altri require (es. leo-profanity, badwordsIt, ecc.)
+
+// Configura il pool di connessioni MySQL
+const db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
+
+// (Opzionale) Test di connessione
+db.getConnection()
+  .then(conn => {
+    console.log('✅ Connessione al database MySQL riuscita!');
+    conn.release();
+  })
+  .catch(err => {
+    console.error('❌ Errore di connessione al database MySQL:', err.message);
+  });
 
 leoProfanity.loadDictionary();
 leoProfanity.add(leoProfanity.getDictionary('it'));
