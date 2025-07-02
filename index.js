@@ -257,7 +257,10 @@ Domanda/idea dell'utente: "${domanda}"
                 domanda,
                 cappello,
                 intenzione,
-                JSON.stringify(rispostaJSON),
+                JSON.stringify({
+                  ...(cappelloObj.nome === 'bianco' ? { fatti_oggettivi: rispostaJSON.fatti_oggettivi } : {}),
+                  ...(cappelloObj.nome === 'rosso' ? { sentimenti_intuizioni: rispostaJSON.sentimenti_intuizioni } : {})
+                }),
                 rispostaPerStoryline,
                 now
               ]
