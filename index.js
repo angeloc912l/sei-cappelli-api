@@ -220,8 +220,8 @@ Domanda/idea dell'utente: "${domanda}"
     const apiEndTime = Date.now();
     console.log(`[${new Date().toISOString()}] TEMPO CHIAMATA API: ${apiEndTime - apiStartTime}ms`);
     
-    // Parsing JSON per il cappello bianco
-    if (cappelloObj.nome === 'bianco' && intenzioneLower === 'valutazione') {
+    // Parsing JSON per il cappello bianco e rosso
+    if ((cappelloObj.nome === 'bianco' || cappelloObj.nome === 'rosso') && intenzioneLower === 'valutazione') {
       try {
         const startTime = Date.now();
         
