@@ -183,8 +183,38 @@ app.post('/sei-cappelli', async (req, res) => {
 
   if (cappello.toLowerCase() === 'verde') {
     try {
-      const risposta = await callAssistantAPI(domanda);
-      return res.json({ verde: risposta });
+      const { rispostaTesto, rispostaJSON } = await callAssistantAPI(domanda);
+      // Salva su DB solo se sessionUUID è presente
+      if (sessionUUID && rispostaJSON) {
+        try {
+          const now = new Date();
+          await db.query(
+            `INSERT INTO interazioni_cappelli
+              (session_uuid, timestamp, domanda, cappello, intenzione, risposta_json, risposta_testo, errore, aggiornato_il)
+             VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)
+             ON DUPLICATE KEY UPDATE
+               domanda = VALUES(domanda),
+               risposta_json = VALUES(risposta_json),
+               risposta_testo = VALUES(risposta_testo),
+               errore = NULL,
+               aggiornato_il = VALUES(aggiornato_il)`,
+            [
+              sessionUUID,
+              now,
+              domanda,
+              cappello,
+              intenzione,
+              JSON.stringify(rispostaJSON),
+              rispostaTesto,
+              now
+            ]
+          );
+          console.log('✅ Risposta verde salvata nel database');
+        } catch (dbError) {
+          console.error('❌ Errore salvataggio DB verde:', dbError.message);
+        }
+      }
+      return res.json({ verde: rispostaTesto });
     } catch (error) {
       console.error('Errore nel cappello verde:', error.message);
       return res.status(500).json({ errore: 'Errore nella generazione di idee creative.' });
