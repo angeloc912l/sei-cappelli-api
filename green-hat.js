@@ -29,7 +29,8 @@ async function callAssistantAPI(domanda) {
       `https://api.openai.com/v1/threads/${threadID}/messages`,
       {
         role: "user",
-        content: `Cappello Verde: Genera idee creative e alternative. \n\nDomanda: "${domanda}"`,
+        content: `Cappello Verde: analizza e genera idee alternative partendo dalla seguente domanda o idea:  
+"${domanda}"`,
       },
       {
         headers: {
