@@ -75,15 +75,15 @@ const intenzioni = {
     }
   },
   generazione: {
-    descrizione: "L'utente desidera generare nuove idee o alternative creative.",
-    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli per pensare, favorisci la creatività anche con proposte fuori dagli schemi.",
+    descrizione: "L'utente desidera chiarire un problema e generare idee e soluzioni creative con metodo strutturato.",
+    guidaGenerale: "Utilizzando la tecnica dei 6 cappelli, fornisci un'analisi chiara e dati oggettivi per chiarire il problema, esprimi sensazioni, valuta rischi e benefici, e genera idee creative.",
     cappelli: {
-      bianco: "Fornisci almeno 10 dati oggettivi come base per nuove idee.",
-      rosso: "Esplora sensazioni o intuizioni che potrebbero ispirare idee originali.",
-      nero: "Individua ostacoli da superare per innovare.",
-      giallo: "Mostra benefici e potenzialità di nuove proposte.",
-      verde: "Genera almeno 3 idee creative e fuori dagli schemi.",
-      blu: "Organizza il processo di generazione delle idee e suggerisci i prossimi passi."
+      bianco: "Fornisci fino a 5 fatti e dati oggettivi rilevanti per comprendere il problema e la sua situazione.",
+      rosso: "Esprimi fino a 5 sensazioni o intuizioni che emergono relativamente al problema e a potenziali soluzioni.",
+      nero: "Individua fino a 5 ostacoli o rischi che potrebbero limitare o bloccare le soluzioni.",
+      giallo: "Evidenzia fino a 5 benefici e potenzialità delle soluzioni ipotizzate.",
+      verde: "Genera almeno 3 idee creative e alternative per affrontare il problema, con breve descrizione per ciascuna.",
+      blu: "Organizza e riassumi le informazioni chiave e suggerisci i prossimi passi da intraprendere."
     }
   }
 };
