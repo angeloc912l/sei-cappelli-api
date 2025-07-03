@@ -96,7 +96,22 @@ async function callAssistantAPI(domanda) {
 
     const risposta = finalMessagesResponse.data.data[0].content[0].text.value;
     console.log("Risposta ricevuta:", risposta);
-    return risposta;
+
+    // Parsing: estrai blocco JSON e testo per Storyline
+    const match = risposta.match(/```json\s*([\s\S]*?)\s*```/);
+    let rispostaJSON = null;
+    let rispostaTesto = risposta;
+    if (match) {
+      try {
+        rispostaJSON = JSON.parse(match[1]);
+        rispostaTesto = risposta.replace(match[0], '').trim();
+      } catch (e) {
+        console.error('Errore nel parsing del JSON:', e.message);
+      }
+    }
+
+    // Restituisci entrambi
+    return { rispostaTesto, rispostaJSON };
 
   } catch (error) {
     console.error("❌ Errore API Assistant:", error.response?.data || error.message);
