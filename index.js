@@ -183,6 +183,8 @@ app.post('/sei-cappelli', async (req, res) => {
 
   if (cappello.toLowerCase() === 'verde') {
     try {
+      // Determina la strategia dal body della richiesta o da una variabile associata
+      const strategia = req.body.strategia || 'ventaglio'; // fallback su 'ventaglio' se non specificato
       const { rispostaTesto, rispostaJSON } = await callAssistantAPI(domanda);
       // Salva su DB solo se sessionUUID è presente
       if (sessionUUID && rispostaJSON) {
@@ -190,12 +192,13 @@ app.post('/sei-cappelli', async (req, res) => {
           const now = new Date();
           await db.query(
             `INSERT INTO interazioni_cappelli
-              (session_uuid, timestamp, domanda, cappello, intenzione, risposta_json, risposta_testo, errore, aggiornato_il)
-             VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)
+              (session_uuid, timestamp, domanda, cappello, intenzione, strategia, risposta_json, risposta_testo, errore, aggiornato_il)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)
              ON DUPLICATE KEY UPDATE
                domanda = VALUES(domanda),
                risposta_json = VALUES(risposta_json),
                risposta_testo = VALUES(risposta_testo),
+               strategia = VALUES(strategia),
                errore = NULL,
                aggiornato_il = VALUES(aggiornato_il)`,
             [
@@ -204,6 +207,7 @@ app.post('/sei-cappelli', async (req, res) => {
               domanda,
               cappello,
               intenzione,
+              strategia,
               JSON.stringify(rispostaJSON),
               rispostaTesto,
               now
@@ -267,18 +271,22 @@ Domanda/idea dell'utente: "${domanda}"
         const rispostaJSON = JSON.parse(rispostaPulita);
         const rispostaPerStoryline = rispostaJSON.risposta;
         
+        // Per tutti gli altri cappelli
+        const strategia = 'default';
+        
         // Salva su DB solo se sessionUUID è presente
         if (sessionUUID) {
           try {
             const now = new Date();
             await db.query(
               `INSERT INTO interazioni_cappelli
-                (session_uuid, timestamp, domanda, cappello, intenzione, risposta_json, risposta_testo, errore, aggiornato_il)
-               VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)
+                (session_uuid, timestamp, domanda, cappello, intenzione, strategia, risposta_json, risposta_testo, errore, aggiornato_il)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)
                ON DUPLICATE KEY UPDATE
                  domanda = VALUES(domanda),
                  risposta_json = VALUES(risposta_json),
                  risposta_testo = VALUES(risposta_testo),
+                 strategia = VALUES(strategia),
                  errore = NULL,
                  aggiornato_il = VALUES(aggiornato_il)`,
               [
@@ -287,12 +295,8 @@ Domanda/idea dell'utente: "${domanda}"
                 domanda,
                 cappello,
                 intenzione,
-                JSON.stringify({
-                  ...(cappelloObj.nome === 'bianco' ? { fatti_oggettivi: rispostaJSON.fatti_oggettivi } : {}),
-                  ...(cappelloObj.nome === 'rosso' ? { sentimenti_intuizioni: rispostaJSON.sentimenti_intuizioni } : {}),
-                  ...(cappelloObj.nome === 'nero' ? { valutazioni_negative: rispostaJSON.valutazioni_negative } : {}),
-                  ...(cappelloObj.nome === 'giallo' ? { valutazioni_positive: rispostaJSON.valutazioni_positive } : {})
-                }),
+                strategia,
+                JSON.stringify(rispostaJSON),
                 rispostaPerStoryline,
                 now
               ]
