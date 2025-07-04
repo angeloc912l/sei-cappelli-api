@@ -225,7 +225,15 @@ app.post('/sei-cappelli', async (req, res) => {
       
       // Per ora restituisci solo la prima strategia per compatibilità
       // In futuro Storyline potrà recuperare tutte le strategie dal database
+      console.log('📊 Risultati strategie:', results);
       const primaStrategia = results[0];
+      
+      if (!primaStrategia || !primaStrategia.rispostaTesto) {
+        console.error('❌ Nessuna risposta valida dalle strategie');
+        return res.status(500).json({ errore: 'Nessuna risposta valida dalle strategie del cappello verde.' });
+      }
+      
+      console.log('✅ Risposta inviata a Storyline:', primaStrategia.rispostaTesto);
       return res.json({ verde: primaStrategia.rispostaTesto });
     } catch (error) {
       console.error('Errore nel cappello verde:', error.message);
