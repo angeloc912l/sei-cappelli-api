@@ -196,30 +196,42 @@ app.post('/sei-cappelli', async (req, res) => {
             // Aggiungi millisecondi diversi per evitare conflitti
             now.setMilliseconds(now.getMilliseconds() + i);
             
-            await db.query(
-              `INSERT INTO interazioni_cappelli
-                (session_uuid, timestamp, domanda, cappello, intenzione, strategia, risposta_json, risposta_testo, errore, aggiornato_il)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)
-               ON DUPLICATE KEY UPDATE
-                 domanda = VALUES(domanda),
-                 risposta_json = VALUES(risposta_json),
-                 risposta_testo = VALUES(risposta_testo),
-                 strategia = VALUES(strategia),
-                 errore = NULL,
-                 aggiornato_il = VALUES(aggiornato_il)`,
-              [
-                sessionUUID,
-                now,
-                domanda,
-                cappello,
-                intenzione,
-                result.strategia,
-                JSON.stringify(result.rispostaJSON || {}),
-                result.rispostaTesto || '',
-                now
-              ]
-            );
-            console.log(`✅ Risposta verde (strategia: ${result.strategia}) salvata nel database`);
+            console.log(`💾 Tentativo salvataggio strategia: ${result.strategia}`);
+            console.log(`📊 Dati strategia:`, {
+              strategia: result.strategia,
+              rispostaTesto: result.rispostaTesto ? 'Presente' : 'NULL',
+              rispostaJSON: result.rispostaJSON ? 'Presente' : 'NULL',
+              errore: result.errore
+            });
+            
+            try {
+              await db.query(
+                `INSERT INTO interazioni_cappelli
+                  (session_uuid, timestamp, domanda, cappello, intenzione, strategia, risposta_json, risposta_testo, errore, aggiornato_il)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)
+                 ON DUPLICATE KEY UPDATE
+                   domanda = VALUES(domanda),
+                   risposta_json = VALUES(risposta_json),
+                   risposta_testo = VALUES(risposta_testo),
+                   strategia = VALUES(strategia),
+                   errore = NULL,
+                   aggiornato_il = VALUES(aggiornato_il)`,
+                [
+                  sessionUUID,
+                  now,
+                  domanda,
+                  cappello,
+                  intenzione,
+                  result.strategia,
+                  JSON.stringify(result.rispostaJSON || {}),
+                  result.rispostaTesto || '',
+                  now
+                ]
+              );
+              console.log(`✅ Risposta verde (strategia: ${result.strategia}) salvata nel database`);
+            } catch (dbError) {
+              console.error(`❌ Errore salvataggio strategia ${result.strategia}:`, dbError.message);
+            }
           }
         } catch (dbError) {
           console.error('❌ Errore salvataggio DB verde:', dbError.message);
