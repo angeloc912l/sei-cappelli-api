@@ -1,18 +1,18 @@
-const fetch = require('node-fetch');
+const axios = require('axios');
 
 module.exports = async function ventaglioStrategy(params) {
   const { domanda, session_uuid, ...rest } = params;
   try {
-    const response = await fetch(process.env.OPENAI_VENTAGLIO_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({ domanda, session_uuid, ...rest })
-    });
-    if (!response.ok) throw new Error('Assistant API ventaglio error');
-    const data = await response.json();
+    const response = await axios.post(process.env.OPENAI_VENTAGLIO_API_URL, 
+      { domanda, session_uuid, ...rest },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        }
+      }
+    );
+    const data = response.data;
     return {
       risposta_testo: data.risposta_testo,
       risposta_json: data.risposta_json,
