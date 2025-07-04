@@ -23,12 +23,118 @@ module.exports = async function entrataCasualeStrategy(params) {
     const threadID = threadResponse.data.id;
     console.log("Thread creato con ID:", threadID);
 
+    // Genera una parola casuale
+    const paroleCasuali = [
+      // Natura e ambiente
+      "giardino", "robot", "fiume", "orologio", "nuvole", "mare", "montagna", 
+      "città", "foresta", "deserto", "oceano", "spazio", "musica", "colori",
+      "animali", "macchine", "natura", "tecnologia", "arte", "sport", "cibo",
+      "viaggio", "casa", "scuola", "lavoro", "tempo", "energia", "acqua",
+      "fuoco", "terra", "aria", "sole", "luna", "stelle", "vento", "pioggia",
+      "albero", "fiore", "erba", "sabbia", "roccia", "ghiaccio", "neve",
+      "arcobaleno", "temporale", "aurora", "tramonto", "alba", "notte", "giorno",
+      "stagioni", "primavera", "estate", "autunno", "inverno", "caldo", "freddo",
+      
+      // Oggetti e strumenti
+      "libro", "penna", "computer", "telefono", "auto", "bicicletta", "treno",
+      "aereo", "nave", "barca", "elicottero", "razzo", "satellite", "telescopio",
+      "microscopio", "camera", "specchio", "porta", "finestra", "scala", "ponte",
+      "torre", "castello", "palazzo", "chiesa", "tempio", "museo", "teatro",
+      "cinema", "stazione", "aeroporto", "porto", "mercato", "negozio", "banca",
+      
+      // Attività e azioni
+      "danza", "canto", "pittura", "scrittura", "lettura", "studio", "ricerca",
+      "invenzione", "scoperta", "esplorazione", "avventura", "mistero", "segreto",
+      "sogno", "fantasia", "immaginazione", "creatività", "innovazione", "progresso",
+      "evoluzione", "trasformazione", "cambiamento", "crescita", "sviluppo",
+      "apprendimento", "insegnamento", "comunicazione", "collaborazione", "competizione",
+      
+      // Emozioni e sensazioni
+      "gioia", "tristezza", "paura", "coraggio", "amore", "amicizia", "fiducia",
+      "speranza", "fede", "passione", "entusiasmo", "curiosità", "stupore",
+      "meraviglia", "sorpresa", "eccitazione", "calma", "serenità", "pace",
+      "armonia", "bellezza", "eleganza", "semplicità", "complessità", "ordine",
+      "caos", "equilibrio", "bilanciamento", "integrazione", "connessione",
+      
+      // Concetti astratti
+      "libertà", "giustizia", "verità", "saggezza", "conoscenza", "scienza",
+      "filosofia", "religione", "cultura", "tradizione", "modernità", "futuro",
+      "passato", "presente", "eternità", "infinito", "universo", "galassia",
+      "pianeta", "sistema", "rete", "web", "digitale", "virtuale", "reale",
+      "artificiale", "naturale", "organico", "sintetico", "biologico",
+      
+      // Materiali e elementi
+      "legno", "metallo", "vetro", "plastica", "tessuto", "carta", "gomma",
+      "ceramica", "marmo", "granito", "diamante", "oro", "argento", "bronzo",
+      "ferro", "acciaio", "alluminio", "rame", "zinco", "piombo", "mercurio",
+      "carbone", "petrolio", "gas", "elettricità", "magnetismo", "gravità",
+      "luce", "ombra", "riflesso", "eco", "risonanza", "vibrazione",
+      
+      // Forme e dimensioni
+      "cerchio", "quadrato", "triangolo", "rettangolo", "cubo", "sfera",
+      "piramide", "cono", "cilindro", "spirale", "onda", "linea", "punto",
+      "superficie", "volume", "altezza", "larghezza", "profondità", "distanza",
+      "vicinanza", "grandezza", "piccolezza", "lunghezza", "brevità", "velocità",
+      "lentezza", "peso", "leggerezza", "densità", "porosità", "trasparenza",
+      
+      // Colori e suoni
+      "rosso", "blu", "verde", "giallo", "arancione", "viola", "rosa", "nero",
+      "bianco", "grigio", "marrone", "turchese", "indaco", "magenta", "ciano",
+      "suono", "rumore", "silenzio", "melodia", "ritmo", "armonia", "tono",
+      "volume", "frequenza", "pitch", "bass", "treble", "eco", "riverbero",
+      
+      // Tempo e movimento
+      "secondo", "minuto", "ora", "giorno", "settimana", "mese", "anno",
+      "secolo", "millennio", "istante", "momento", "periodo", "era", "epoca",
+      "movimento", "moto", "velocità", "accelerazione", "decelerazione",
+      "rotazione", "rivoluzione", "orbita", "traiettoria", "percorso", "strada",
+      "sentiero", "autostrada", "tunnel", "galleria", "passaggio", "corridoio",
+      
+      // Vita e biologia
+      "cellula", "organo", "tessuto", "sistema", "organismo", "specie",
+      "popolazione", "ecosistema", "biodiversità", "evoluzione", "adattamento",
+      "mutazione", "genetica", "DNA", "proteina", "enzima", "ormone",
+      "neurotrasmettitore", "sinapsi", "neurone", "cervello", "mente",
+      "coscienza", "inconscio", "memoria", "apprendimento", "intelligenza",
+      "emozione", "sentimento", "pensiero", "idea", "concetto", "teoria"
+    ];
+    
+    const parolaCasuale = paroleCasuali[Math.floor(Math.random() * paroleCasuali.length)];
+    console.log("🎲 Parola casuale generata:", parolaCasuale);
+
     // Step 2: Aggiungi il messaggio dell'utente al thread
     await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/messages`,
       {
         role: "user",
-        content: `Strategia Entrata Casuale - Cappello Verde: analizza e genera idee alternative usando la tecnica dell'entrata casuale partendo dalla seguente domanda o idea: "${domanda}"`,
+        content: `Strategia Entrata Casuale - Cappello Verde: 
+
+IDEA ORIGINALE: "${domanda}"
+
+PAROLA CASUALE: "${parolaCasuale}"
+
+Usa la tecnica dell'entrata casuale per generare nuove idee creative. Combina l'idea originale con la parola casuale per creare connessioni inaspettate e innovative. 
+
+Genera almeno 3 nuove idee che:
+1. Partono dall'idea originale
+2. Incorporano elementi della parola casuale
+3. Creano soluzioni innovative e pratiche
+
+Restituisci la risposta in formato JSON con questa struttura:
+{
+  "scopo": {
+    "testo": "idea originale",
+    "parola_casuale": ["parola1", "parola2"],
+    "idee_alternative": ["idea1", "idea2", "idea3"]
+  },
+  "valutazione": {
+    "fattibilita": "valutazione fattibilità",
+    "vantaggi": "vantaggi principali",
+    "risorse": "risorse necessarie",
+    "adeguatezza": "adeguatezza al contesto",
+    "idea_migliore": "la migliore idea tra quelle generate"
+  }
+}`,
       },
       {
         headers: {
