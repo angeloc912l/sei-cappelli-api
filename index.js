@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const leoProfanity = require('leo-profanity');
 const badwordsIt = require('./badwords-it');
-const callAssistantAPI = require('./green-hat');
+const callAssistantAPI = require('./green-hat.js');
 const mysql = require('mysql2/promise'); // <-- Poi importa mysql2
 
 // ... altri require (es. leo-profanity, badwordsIt, ecc.)
@@ -183,42 +183,50 @@ app.post('/sei-cappelli', async (req, res) => {
 
   if (cappello.toLowerCase() === 'verde') {
     try {
-      // Determina la strategia dal body della richiesta o da una variabile associata
-      const strategia = req.body.strategia || 'ventaglio'; // fallback su 'ventaglio' se non specificato
-      const { rispostaTesto, rispostaJSON } = await callAssistantAPI(domanda);
-      // Salva su DB solo se sessionUUID è presente
-      if (sessionUUID && rispostaJSON) {
+      // Chiama il dispatcher delle strategie del cappello verde
+      const results = await callAssistantAPI(intenzione, { domanda, sessionUUID });
+      
+      // Salva tutte le risposte nel database se sessionUUID è presente
+      if (sessionUUID) {
         try {
           const now = new Date();
-          await db.query(
-            `INSERT INTO interazioni_cappelli
-              (session_uuid, timestamp, domanda, cappello, intenzione, strategia, risposta_json, risposta_testo, errore, aggiornato_il)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)
-             ON DUPLICATE KEY UPDATE
-               domanda = VALUES(domanda),
-               risposta_json = VALUES(risposta_json),
-               risposta_testo = VALUES(risposta_testo),
-               strategia = VALUES(strategia),
-               errore = NULL,
-               aggiornato_il = VALUES(aggiornato_il)`,
-            [
-              sessionUUID,
-              now,
-              domanda,
-              cappello,
-              intenzione,
-              strategia,
-              JSON.stringify(rispostaJSON),
-              rispostaTesto,
-              now
-            ]
-          );
-          console.log('✅ Risposta verde salvata nel database');
+          
+          // Salva ogni strategia separatamente
+          for (const result of results) {
+            await db.query(
+              `INSERT INTO interazioni_cappelli
+                (session_uuid, timestamp, domanda, cappello, intenzione, strategia, risposta_json, risposta_testo, errore, aggiornato_il)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)
+               ON DUPLICATE KEY UPDATE
+                 domanda = VALUES(domanda),
+                 risposta_json = VALUES(risposta_json),
+                 risposta_testo = VALUES(risposta_testo),
+                 strategia = VALUES(strategia),
+                 errore = NULL,
+                 aggiornato_il = VALUES(aggiornato_il)`,
+              [
+                sessionUUID,
+                now,
+                domanda,
+                cappello,
+                intenzione,
+                result.strategia,
+                JSON.stringify(result.rispostaJSON || {}),
+                result.rispostaTesto || '',
+                now
+              ]
+            );
+            console.log(`✅ Risposta verde (strategia: ${result.strategia}) salvata nel database`);
+          }
         } catch (dbError) {
           console.error('❌ Errore salvataggio DB verde:', dbError.message);
         }
       }
-      return res.json({ verde: rispostaTesto });
+      
+      // Per ora restituisci solo la prima strategia per compatibilità
+      // In futuro Storyline potrà recuperare tutte le strategie dal database
+      const primaStrategia = results[0];
+      return res.json({ verde: primaStrategia.rispostaTesto });
     } catch (error) {
       console.error('Errore nel cappello verde:', error.message);
       return res.status(500).json({ errore: 'Errore nella generazione di idee creative.' });
@@ -336,6 +344,31 @@ Domanda/idea dell'utente: "${domanda}"
     console.error('Errore nell\'interazione con OpenAI:', error.message);
     
     res.status(500).json({ errore: 'Errore nella generazione della risposta.' });
+  }
+});
+
+// Endpoint per recuperare tutte le strategie di una sessione
+app.get('/strategie/:sessionUUID', async (req, res) => {
+  const { sessionUUID } = req.params;
+  
+  if (!sessionUUID) {
+    return res.status(400).json({ errore: 'sessionUUID mancante.' });
+  }
+
+  try {
+    const [rows] = await db.query(
+      `SELECT cappello, intenzione, strategia, risposta_testo, risposta_json, timestamp
+       FROM interazioni_cappelli
+       WHERE session_uuid = ?
+       ORDER BY timestamp ASC`,
+      [sessionUUID]
+    );
+
+    console.log(`✅ Recuperate ${rows.length} strategie per sessione: ${sessionUUID}`);
+    res.json({ strategie: rows });
+  } catch (error) {
+    console.error('❌ Errore nel recupero delle strategie:', error.message);
+    res.status(500).json({ errore: 'Errore nel recupero delle strategie.' });
   }
 });
 
