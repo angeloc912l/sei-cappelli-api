@@ -189,10 +189,13 @@ app.post('/sei-cappelli', async (req, res) => {
       // Salva tutte le risposte nel database se sessionUUID è presente
       if (sessionUUID) {
         try {
-          const now = new Date();
-          
-          // Salva ogni strategia separatamente
-          for (const result of results) {
+          // Salva ogni strategia separatamente con timestamp diversi
+          for (let i = 0; i < results.length; i++) {
+            const result = results[i];
+            const now = new Date();
+            // Aggiungi millisecondi diversi per evitare conflitti
+            now.setMilliseconds(now.getMilliseconds() + i);
+            
             await db.query(
               `INSERT INTO interazioni_cappelli
                 (session_uuid, timestamp, domanda, cappello, intenzione, strategia, risposta_json, risposta_testo, errore, aggiornato_il)
