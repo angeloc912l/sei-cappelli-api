@@ -1,46 +1,5 @@
 const axios = require('axios');
 
-// Funzione per analizzare l'idea e decidere la tecnica
-function analizzaIdeaPerTecnica(idea) {
-  const ideaLower = idea.toLowerCase();
-  
-  // Indicatori per "metodo della fuga" (sfidare presupposti/convenzioni)
-  const indicatoriFuga = [
-    'sempre', 'mai', 'tutti', 'nessuno', 'sempre stato', 'tradizionalmente',
-    'convenzionale', 'standard', 'normale', 'abituale', 'scontato',
-    'presupposto', 'assunto', 'dato per certo', 'ovvio', 'evidente'
-  ];
-  
-  // Indicatori per "distorsione" (procedure sequenziali)
-  const indicatoriDistorsione = [
-    'prima', 'poi', 'dopo', 'successivamente', 'sequenza', 'ordine',
-    'passo', 'fase', 'stadio', 'processo', 'procedura', 'metodo',
-    'step', 'sequenziale', 'lineare', 'progressivo', 'graduale'
-  ];
-  
-  let punteggioFuga = 0;
-  let punteggioDistorsione = 0;
-  
-  // Calcola punteggi
-  indicatoriFuga.forEach(indicator => {
-    if (ideaLower.includes(indicator)) punteggioFuga++;
-  });
-  
-  indicatoriDistorsione.forEach(indicator => {
-    if (ideaLower.includes(indicator)) punteggioDistorsione++;
-  });
-  
-  // Logica di decisione
-  if (punteggioFuga > punteggioDistorsione) {
-    return 'metodo_fuga';
-  } else if (punteggioDistorsione > punteggioFuga) {
-    return 'distorsione';
-  } else {
-    // Se punteggi uguali, default a metodo della fuga
-    return 'metodo_fuga';
-  }
-}
-
 module.exports = async function provocazioneIntelligenteStrategy(params) {
   const { domanda, session_uuid, ...rest } = params;
   const API_KEY = process.env.OPENAI_API_KEY;
@@ -49,12 +8,7 @@ module.exports = async function provocazioneIntelligenteStrategy(params) {
   try {
     console.log("🎯 Strategia Provocazione Intelligente - Assistant ID:", ASSISTANT_ID);
 
-    // Step 1: Analizza l'idea e decide la tecnica
-    const tecnicaScelta = analizzaIdeaPerTecnica(domanda);
-    console.log(`🔍 Analisi idea completata - Tecnica scelta: ${tecnicaScelta}`);
-    console.log(`📋 File da leggere nel playground: verde-valutazione-${tecnicaScelta === 'metodo_fuga' ? 'metodo-fuga' : 'distorsione'}.txt`);
-
-    // Step 2: Crea un nuovo thread
+    // Step 1: Crea un nuovo thread
     const threadResponse = await axios.post(
       "https://api.openai.com/v1/threads",
       {},
@@ -69,14 +23,12 @@ module.exports = async function provocazioneIntelligenteStrategy(params) {
     const threadID = threadResponse.data.id;
     console.log("Thread creato con ID:", threadID);
 
-    // Step 3: Aggiungi il messaggio dell'utente al thread
+    // Step 2: Aggiungi il messaggio dell'utente al thread
     const messaggioUtente = `IDEA ORIGINALE: "${domanda}"
 
-Applica la tecnica: ${tecnicaScelta}
+Analizza l'idea e decidi quale tecnica applicare, poi applicala.`;
 
-Leggi le istruzioni dal file corrispondente nel playground e applica rigorosamente la tecnica scelta.`;
-
-    console.log(`📤 Messaggio inviato all'assistante con tecnica: ${tecnicaScelta}`);
+    console.log("📤 Messaggio inviato all'assistante per analisi e applicazione automatica");
     
     await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/messages`,
@@ -94,7 +46,7 @@ Leggi le istruzioni dal file corrispondente nel playground e applica rigorosamen
     );
     console.log("Messaggio utente aggiunto al thread");
 
-    // Step 4: Avvia l'analisi del thread con l'assistante
+    // Step 3: Avvia l'analisi del thread con l'assistante
     const runResponse = await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/runs`,
       {
@@ -113,7 +65,7 @@ Leggi le istruzioni dal file corrispondente nel playground e applica rigorosamen
     let runID = runResponse.data.id;
     console.log("Run avviato con ID:", runID);
 
-    // Step 5: Attendi la risposta elaborata
+    // Step 4: Attendi la risposta elaborata
     while (status !== "completed") {
       console.log("Attesa elaborazione strategia provocazione intelligente...");
       await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -133,7 +85,7 @@ Leggi le istruzioni dal file corrispondente nel playground e applica rigorosamen
 
     console.log("Run completato, recupero risposta strategia provocazione intelligente...");
 
-    // Step 6: Recupera la risposta finale
+    // Step 5: Recupera la risposta finale
     const finalMessagesResponse = await axios.get(
       `https://api.openai.com/v1/threads/${threadID}/messages`,
       {
