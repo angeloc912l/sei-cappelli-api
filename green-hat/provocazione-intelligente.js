@@ -125,13 +125,33 @@ Assicurati di seguire esattamente le istruzioni del file corrispondente.`;
     const match = risposta.match(/```json\s*([\s\S]*?)\s*```/);
     let rispostaJSON = null;
     let rispostaTesto = risposta;
+    
     if (match) {
       try {
-        rispostaJSON = JSON.parse(match[1]);
+        const jsonString = match[1];
+        console.log("📋 JSON estratto:", jsonString);
+        
+        // Controlla se il JSON è completo
+        if (jsonString.includes('"...') || jsonString.includes('//')) {
+          console.log("⚠️ JSON incompleto rilevato - contiene placeholder");
+        }
+        
+        rispostaJSON = JSON.parse(jsonString);
         rispostaTesto = risposta.replace(match[0], '').trim();
+        
+        // Verifica se il JSON ha tutti i campi necessari
+        if (rispostaJSON.scopo && rispostaJSON.valutazione) {
+          console.log("✅ JSON valido con struttura completa");
+        } else {
+          console.log("⚠️ JSON incompleto - mancano campi necessari");
+        }
+        
       } catch (e) {
-        console.error('Errore nel parsing del JSON strategia provocazione intelligente:', e.message);
+        console.error('❌ Errore nel parsing del JSON strategia provocazione intelligente:', e.message);
+        console.log("📋 JSON problematico:", match[1]);
       }
+    } else {
+      console.log("⚠️ Nessun blocco JSON trovato nella risposta");
     }
 
     // Restituisci entrambi

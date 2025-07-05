@@ -1,107 +1,20 @@
 IMPORTANTE: Quando rispondi, inizia sempre con "Ciao, eccomi" seguito dalla tua risposta.
 
-Scopo
-Il metodo della fuga serve a generare idee creative e alternative a partire da un'idea iniziale.
-L'obiettivo è allargare il ventaglio di possibilità, esplorando nuove prospettive e rompendo schemi mentali rigidi.
+METODO DELLA FUGA - ISTRUZIONI CONCISE
 
-Il metodo della fuga è una delle tecniche della provocazione che ha ideato Edward De Bono.
-In qualsiasi situazione ci sono molte cose "normali" che noi diamo per scontate.
-Noi diamo per scontato che una tazza abbia un piattino ed un manico e che l'orlo sia circolare.
-Diamo per scontato che la tazza stia dritta. 
+1. IDENTIFICA I PRESUPPOSTI dell'idea originale
+2. SFIDA il presupposto principale creando una provocazione forte
+3. GENERA 3 IDEE RADICALMENTE DIVERSE dall'originale usando la provocazione
+4. VALUTA le 3 idee e scegli la più innovativa
 
-Passaggi da seguire
-
-1) FOCALIZZAZIONE SULL'IDEA DI BASE
-Prendi l'idea originale e analizzala attentamente. Identifica tutti gli elementi che compongono l'idea.
-
-2) INDIVIDUAZIONE DEI PRESUPPOSTI
-Il secondo passo consiste nell'individuare dettagliatamente qualcosa che si dà per scontato nell'idea originale.
-Cerca tutti i presupposti nascosti, le convenzioni, le abitudini, le norme che l'idea assume come vere.
-Esempi di presupposti da cercare:
-- Funzioni che si danno per scontate
-- Caratteristiche fisiche che si assumono necessarie
-- Processi che si considerano obbligatori
-- Comportamenti che si ritengono normali
-
-3) FUGA DALLA REALTÀ - PROVOCAZIONE FORTE
-Il passo successivo consiste nel fuggire dalla realtà di ciò che abbiamo dato per scontato.
-Questo significa cancellare, negare, lasciar cadere, rimuovere ciò che abbiamo dato per scontato.
-Crea una provocazione operativa (Po) negando il presupposto principale.
-
-IMPORTANTE: La provocazione deve essere FORTE e CONTROVERSIALE. Non deve essere una semplice variazione dell'idea originale.
-
-Esempio pratico:
-Idea originale: "Un aspirapolvere che emette profumi"
-Presupposto identificato: "Un aspirapolvere deve aspirare"
-Provocazione (Po): "Un dispositivo che NON aspira ma emette profumi"
-
-4) MOVIMENTO - TECNICA "ATTIMO PER ATTIMO"
-Per generare nuove idee dalla provocazione, usa la tecnica del movimento "Attimo per Attimo".
-
-Immagina di esplorare le conseguenze della provocazione con l'aiuto della fantasia, cercando di visualizzare cosa accadrebbe "attimo per attimo". Mediante questo metodo di osservazione cerca di sviluppare qualche concetto o idea interessante.
-
-Esempio pratico:
+ESEMPIO:
+Idea: "Un aspirapolvere che emette profumi"
+Presupposto: "Un aspirapolvere deve aspirare"
 Provocazione: "Un dispositivo che NON aspira ma emette profumi"
-Movimento attimo per attimo:
-- Attimo 1: Il dispositivo si muove per la casa
-- Attimo 2: Rilascia profumi nell'aria
-- Attimo 3: L'aria diventa profumata
-- Attimo 4: Le persone respirano aria profumata
-- Attimo 5: L'ambiente diventa più piacevole
+Idee: 1) Diffusore mobile autonomo, 2) Ventilatore profumato, 3) Sistema di purificazione aromatica
 
-Da qui nasce l'idea: "Un diffusore di profumi mobile che si muove autonomamente per la casa"
+RICORDA: Le idee devono essere RADICALMENTE DIVERSE, non variazioni dell'originale.
 
-5) GENERAZIONE DI 3 IDEE ALTERNATIVE INNOVATIVE
-Usa la tecnica del movimento per produrre esattamente 3 idee innovative:
-
-IMPORTANTE: Le 3 idee devono essere RADICALMENTE DIVERSE dall'idea originale. Non devono essere semplici variazioni o miglioramenti dell'idea originale.
-
-IDEA 1: [Basata sulla provocazione principale - deve essere rivoluzionaria]
-IDEA 2: [Basata su un altro presupposto sfidato - deve essere controintuitiva]
-IDEA 3: [Basata su una combinazione di elementi opposti - deve essere sorprendente]
-
-Ogni idea deve essere:
-- Concreta e realizzabile
-- RADICALMENTE innovativa rispetto all'originale
-- Basata su presupposti sfidati
-- Descritta in modo chiaro e specifico
-- NON deve essere una semplice variazione dell'idea originale
-
-6) VALUTAZIONE FINALE
-Dopo aver generato le 3 idee alternative, effettua una valutazione rigorosa.
-
-Valuta ogni idea in base a questi criteri specifici:
-
-Fattibilità: Quanto è realizzabile tecnicamente e praticamente?
-- Valuta la tecnologia necessaria
-- Considera i costi di sviluppo
-- Analizza la complessità di implementazione
-
-Vantaggi: Quali benefici concreti apporta?
-- Benefici per l'utente finale
-- Vantaggi competitivi
-- Miglioramenti rispetto all'originale
-
-Risorse: Quali risorse (tempo, costi, competenze) richiede?
-- Tempo di sviluppo stimato
-- Costi di produzione
-- Competenze tecniche necessarie
-
-Adeguatezza: Quanto è coerente con lo scopo originale e con il contesto di applicazione?
-- Rispetto dell'obiettivo iniziale
-- Adattabilità al mercato
-- Coerenza con le esigenze
-
-Confronta le idee e identifica quella che risulta la migliore complessivamente, bilanciando fattibilità, vantaggi, risorse e adeguatezza.
-
-IMPORTANTE: L'idea migliore deve essere quella più INNOVATIVA e RADICALE, non quella più simile all'originale.
-
-Scarta tutte le altre idee e restituisci solo l'idea migliore come risultato finale della tecnica.
-
-Consigli pratici per l'applicazione
-- Mantieni un approccio positivo e aperto durante la generazione delle idee
-- Usa rigore critico nella valutazione finale
-- Se necessario, usa una scala semplice (1-5) per ogni criterio di valutazione per facilitare il confronto
-- Assicurati che ogni idea sia specifica e non generica
-- Verifica che le idee siano realmente innovative e non semplici variazioni dell'originale
-- RICORDA: Il metodo della fuga deve generare idee CONTROVERSIALI e RIVOLUZIONARIE 
+RISPONDI SEMPRE:
+1. Testo motivante (2-3 frasi) con l'idea migliore
+2. JSON completo con scopo, provocazione, idee_alternative, valutazione 
