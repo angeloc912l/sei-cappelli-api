@@ -1,12 +1,82 @@
 const axios = require('axios');
 
+// Funzione per analizzare l'idea e decidere la tecnica usando un mix di strategie
+function analizzaIdeaPerTecnica(idea) {
+  const ideaLower = idea.toLowerCase();
+  let punteggioFuga = 0;
+  let punteggioDistorsione = 0;
+  
+  // 1. ANALISI PAROLE CHIAVE (40% del peso)
+  const indicatoriFuga = [
+    'sempre', 'mai', 'tutti', 'nessuno', 'tradizionalmente',
+    'convenzionale', 'standard', 'normale', 'abituale', 'scontato',
+    'presupposto', 'assunto', 'dato per certo', 'ovvio', 'evidente'
+  ];
+  
+  const indicatoriDistorsione = [
+    'prima', 'poi', 'dopo', 'successivamente', 'sequenza', 'ordine',
+    'passo', 'fase', 'stadio', 'processo', 'procedura', 'metodo',
+    'step', 'sequenziale', 'lineare', 'progressivo', 'graduale'
+  ];
+  
+  indicatoriFuga.forEach(indicator => {
+    if (ideaLower.includes(indicator)) punteggioFuga += 2;
+  });
+  
+  indicatoriDistorsione.forEach(indicator => {
+    if (ideaLower.includes(indicator)) punteggioDistorsione += 2;
+  });
+  
+  // 2. ANALISI LUNGHEZZA (20% del peso)
+  if (idea.length < 50) {
+    punteggioFuga += 1;
+  } else {
+    punteggioDistorsione += 1;
+  }
+  
+  // 3. ANALISI PATTERN LINGUISTICI (30% del peso)
+  if (idea.includes('come') || idea.includes('?') || idea.includes('perché')) {
+    punteggioFuga += 1.5;
+  }
+  
+  if (idea.includes('creare') || idea.includes('sviluppare') || idea.includes('fare')) {
+    punteggioDistorsione += 1.5;
+  }
+  
+  // 4. ANALISI COMPLESSITÀ (10% del peso)
+  const parole = idea.split(' ').length;
+  if (parole > 10) {
+    punteggioDistorsione += 1;
+  } else {
+    punteggioFuga += 1;
+  }
+  
+  // DECISIONE FINALE
+  if (punteggioFuga > punteggioDistorsione) {
+    return 'metodo_fuga';
+  } else {
+    return 'distorsione';
+  }
+}
+
 module.exports = async function provocazioneIntelligenteStrategy(params) {
   const { domanda, session_uuid, ...rest } = params;
   const API_KEY = process.env.OPENAI_API_KEY;
-  const ASSISTANT_ID = process.env.OPENAI_PROVOCAZIONE_INTELLIGENTE_ASSISTANT_ID || "asst_default_id";
+  
+  // Scegli l'assistant in base alla tecnica
+  const tecnicaScelta = analizzaIdeaPerTecnica(domanda);
+  let ASSISTANT_ID;
+  
+  if (tecnicaScelta === 'metodo_fuga') {
+    ASSISTANT_ID = process.env.OPENAI_METODO_FUGA_ASSISTANT_ID || "asst_default_id";
+    console.log("🎯 Strategia Metodo della Fuga - Assistant ID:", ASSISTANT_ID);
+  } else {
+    ASSISTANT_ID = process.env.OPENAI_DISTORSIONE_ASSISTANT_ID || "asst_default_id";
+    console.log("🎯 Strategia Distorsione - Assistant ID:", ASSISTANT_ID);
+  }
 
   try {
-    console.log("🎯 Strategia Provocazione Intelligente - Assistant ID:", ASSISTANT_ID);
+    console.log(`🔍 Analisi idea completata - Tecnica scelta: ${tecnicaScelta}`);
 
     // Step 1: Crea un nuovo thread
     const threadResponse = await axios.post(
@@ -26,9 +96,11 @@ module.exports = async function provocazioneIntelligenteStrategy(params) {
     // Step 2: Aggiungi il messaggio dell'utente al thread
     const messaggioUtente = `IDEA ORIGINALE: "${domanda}"
 
-Analizza l'idea e decidi quale tecnica applicare, poi applicala.`;
+Applica la tecnica: ${tecnicaScelta}
 
-    console.log("📤 Messaggio inviato all'assistante per analisi e applicazione automatica");
+Leggi le istruzioni dal file corrispondente nel playground e applica rigorosamente la tecnica scelta.`;
+
+    console.log(`📤 Messaggio inviato all'assistante con tecnica: ${tecnicaScelta}`);
     
     await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/messages`,

@@ -61,4 +61,29 @@ Restituisci solo l'idea migliore come risultato finale della tecnica.
 Consigli pratici
 Mantieni un approccio positivo e aperto durante la generazione, ma usa rigore critico nella valutazione finale.
 
-Se necessario, usa una scala semplice (ad esempio 1-5) per ogni criterio di valutazione per facilitare il confronto. 
+Se necessario, usa una scala semplice (ad esempio 1-5) per ogni criterio di valutazione per facilitare il confronto.
+
+IMPORTANTE: Quando rispondi, inizia sempre con "Ciao, eccomi" seguito dalla tua risposta.
+
+DISTORSIONE - ISTRUZIONI CONCISE
+
+1. IDENTIFICA I PROCESSI/SEQUENZE dell'idea originale
+2. MODIFICA l'ordine, la sequenza o la logica temporale
+3. GENERA 3 IDEE RADICALMENTE DIVERSE dall'originale usando la distorsione
+4. VALUTA le 3 idee e scegli la più innovativa
+
+ESEMPIO:
+Idea: "Un sistema che prima registra, poi analizza, infine invia i risultati"
+Processo: "prima → poi → infine"
+Distorsione: "Un sistema che prima invia risultati, poi registra, infine analizza"
+Idee: 1) Sistema che invia prima di registrare, 2) Analisi in tempo reale durante registrazione, 3) Sistema che inverte completamente la sequenza
+
+RICORDA: Le idee devono essere RADICALMENTE DIVERSE, non variazioni dell'originale.
+
+IMPORTANTE: Le idee devono essere SPECIFICHE e PRATICHE, non generiche. Ogni idea deve essere concreta e realizzabile.
+
+RISPONDI SEMPRE:
+1. Testo motivante (2-3 frasi) che spiega l'IDEA MIGLIORE in modo diretto e coinvolgente, SENZA menzionare la distorsione
+2. JSON completo con scopo, provocazione, idee_alternative, valutazione
+
+IMPORTANTE: Il testo deve menzionare esattamente l'idea migliore che inserisci nel campo "idea_migliore" del JSON. NON descrivere l'idea originale e NON menzionare la tecnica utilizzata! 
