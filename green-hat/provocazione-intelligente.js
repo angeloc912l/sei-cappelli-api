@@ -52,6 +52,7 @@ module.exports = async function provocazioneIntelligenteStrategy(params) {
     // Step 1: Analizza l'idea e decide la tecnica
     const tecnicaScelta = analizzaIdeaPerTecnica(domanda);
     console.log(`🔍 Analisi idea completata - Tecnica scelta: ${tecnicaScelta}`);
+    console.log(`📋 File da leggere nel playground: verde-valutazione-${tecnicaScelta === 'metodo_fuga' ? 'metodo-fuga' : 'distorsione'}.txt`);
 
     // Step 2: Crea un nuovo thread
     const threadResponse = await axios.post(
@@ -69,15 +70,19 @@ module.exports = async function provocazioneIntelligenteStrategy(params) {
     console.log("Thread creato con ID:", threadID);
 
     // Step 3: Aggiungi il messaggio dell'utente al thread
+    const messaggioUtente = `IDEA ORIGINALE: "${domanda}"
+
+Applica la tecnica: ${tecnicaScelta}
+
+Leggi le istruzioni dal file corrispondente nel playground e applica rigorosamente la tecnica scelta.`;
+
+    console.log(`📤 Messaggio inviato all'assistante con tecnica: ${tecnicaScelta}`);
+    
     await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/messages`,
       {
         role: "user",
-        content: `IDEA ORIGINALE: "${domanda}"
-
-Applica la tecnica: ${tecnicaScelta}
-
-Leggi le istruzioni dal file corrispondente nel playground e applica rigorosamente la tecnica scelta.`
+        content: messaggioUtente
       },
       {
         headers: {
