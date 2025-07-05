@@ -1,12 +1,14 @@
 const ventaglio = require('./green-hat/ventaglio');
 const entrataCasuale = require('./green-hat/entrata_casuale');
+const provocazioneIntelligente = require('./green-hat/provocazione-intelligente');
 
 const strategies = {
   ventaglio,
   entrata_casuale: entrataCasuale,
+  provocazione_intelligente: provocazioneIntelligente,
 };
 
-const strategieValutazione = ['ventaglio', 'entrata_casuale'];
+const strategieValutazione = ['ventaglio', 'entrata_casuale', 'provocazione_intelligente'];
 
 async function runGreenHatStrategies(intenzione, params) {
   console.log(`🎯 Esecuzione strategie cappello verde - Intenzione: ${intenzione}`);
