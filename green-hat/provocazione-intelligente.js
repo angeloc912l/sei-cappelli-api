@@ -26,21 +26,9 @@ module.exports = async function provocazioneIntelligenteStrategy(params) {
     // Step 2: Aggiungi il messaggio dell'utente al thread
     const messaggioUtente = `IDEA ORIGINALE: "${domanda}"
 
-Analizza l'idea e decidi quale tecnica applicare, poi applicala.
-
-IMPORTANTE: Se scegli "metodo_fuga", leggi le istruzioni dal file "verde-valutazione-metodo-fuga.txt" nel playground e applica rigorosamente i passaggi indicati.
-
-Se scegli "distorsione", leggi le istruzioni dal file "verde-valutazione-distorsione.txt" nel playground e applica rigorosamente i passaggi indicati.
-
-RICORDA: Il metodo della fuga deve generare idee RADICALMENTE DIVERSE dall'originale, non semplici variazioni. Sfida i presupposti in modo controversiale e rivoluzionario.
-
-Assicurati di seguire esattamente le istruzioni del file corrispondente.`;
+Analizza l'idea e decidi quale tecnica applicare, poi applicala.`;
 
     console.log("📤 Messaggio inviato all'assistante per analisi e applicazione automatica");
-    console.log("📋 Istruzioni per l'assistant:");
-    console.log("   - Deve decidere tra metodo_fuga o distorsione");
-    console.log("   - Deve leggere il file corrispondente nel playground");
-    console.log("   - Deve applicare rigorosamente le istruzioni del file");
     
     await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/messages`,
@@ -111,47 +99,18 @@ Assicurati di seguire esattamente le istruzioni del file corrispondente.`;
 
     const risposta = finalMessagesResponse.data.data[0].content[0].text.value;
     console.log("Risposta strategia provocazione intelligente ricevuta:", risposta);
-    
-    // Analisi della risposta per verificare se segue le istruzioni
-    console.log("🔍 Analisi della risposta dell'assistant:");
-    console.log("   - Contiene 'metodo_fuga' o 'distorsione':", risposta.includes('metodo_fuga') || risposta.includes('distorsione'));
-    console.log("   - Contiene 'provocazione':", risposta.includes('provocazione'));
-    console.log("   - Contiene 'idee_alternative':", risposta.includes('idee_alternative'));
-    console.log("   - Contiene JSON strutturato:", risposta.includes('```json'));
-    console.log("   - Inizia con 'Ciao, eccomi':", risposta.startsWith('Ciao, eccomi'));
-    console.log("   - Lunghezza risposta:", risposta.length, "caratteri");
 
     // Parsing: estrai blocco JSON e testo per Storyline
     const match = risposta.match(/```json\s*([\s\S]*?)\s*```/);
     let rispostaJSON = null;
     let rispostaTesto = risposta;
-    
     if (match) {
       try {
-        const jsonString = match[1];
-        console.log("📋 JSON estratto:", jsonString);
-        
-        // Controlla se il JSON è completo
-        if (jsonString.includes('"...') || jsonString.includes('//')) {
-          console.log("⚠️ JSON incompleto rilevato - contiene placeholder");
-        }
-        
-        rispostaJSON = JSON.parse(jsonString);
+        rispostaJSON = JSON.parse(match[1]);
         rispostaTesto = risposta.replace(match[0], '').trim();
-        
-        // Verifica se il JSON ha tutti i campi necessari
-        if (rispostaJSON.scopo && rispostaJSON.valutazione) {
-          console.log("✅ JSON valido con struttura completa");
-        } else {
-          console.log("⚠️ JSON incompleto - mancano campi necessari");
-        }
-        
       } catch (e) {
-        console.error('❌ Errore nel parsing del JSON strategia provocazione intelligente:', e.message);
-        console.log("📋 JSON problematico:", match[1]);
+        console.error('Errore nel parsing del JSON strategia provocazione intelligente:', e.message);
       }
-    } else {
-      console.log("⚠️ Nessun blocco JSON trovato nella risposta");
     }
 
     // Restituisci entrambi
