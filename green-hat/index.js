@@ -1,12 +1,14 @@
 const ventaglio = require('./ventaglio');
 const entrataCasuale = require('./entrata_casuale');
+const provocazioneIntelligente = require('./provocazione-intelligente');
 
 const strategies = {
   ventaglio,
   entrata_casuale: entrataCasuale,
+  provocazione_intelligente: provocazioneIntelligente,
 };
 
-const strategieValutazione = ['ventaglio', 'entrata_casuale'];
+const strategieValutazione = ['ventaglio', 'entrata_casuale', 'provocazione_intelligente'];
 
 async function runGreenHatStrategies(intenzione, params) {
   if (intenzione === 'valutazione') {

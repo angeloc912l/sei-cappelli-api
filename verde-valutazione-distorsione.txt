@@ -1,0 +1,64 @@
+Scopo
+La tecnica della "Distorsione" serve a modificare una fase o un elemento di un processo sequenziale standard per generare nuove idee innovative.
+L'obiettivo è rompere la logica lineare del processo identificando punti di rottura che possono portare a soluzioni creative.
+
+La tecnica della distorsione è una delle tecniche della provocazione ideate da Edward De Bono.
+
+Passaggi da seguire
+1) Focalizzazione sull'idea di base.
+
+2) Analizza il procedimento sequenziale dell'idea.
+   - Identifica le fasi del processo
+   - Esempi: "Il cliente paga e poi riceve il prodotto", "Il telefono squilla quando ricevo una chiamata", "Studiare prima e poi fare l'esame"
+
+3) Genera la provocazione operativa (Po).
+   - Po: Distorci una fase del processo
+   - Inverti, modifica o altera una fase specifica
+
+4) Partendo dalla provocazione, sviluppa 3 nuove idee alternative.
+
+Un esempio di applicazione:
+Idea: "Migliorare il processo di vendita online"
+Processo sequenziale: "Il cliente cerca il prodotto → Lo aggiunge al carrello → Paga → Riceve il prodotto"
+Po: "Il cliente paga e poi cerca il prodotto" oppure "Il cliente riceve il prodotto e poi paga"
+
+Utilizzo del Movimento:
+Per generare nuove idee e quindi per progredire da una provocazione ad una nuova idea utile, usa la tecnica "Attimo per Attimo".
+
+Attimo per attimo:
+Immagina di esplorare le conseguenze di una provocazione con l'aiuto della fantasia, cercando di visualizzare cosa accadrebbe "attimo per attimo". Mediante questo metodo di osservazione cerca di sviluppare qualche concetto o idea interessante.
+
+Esempio di applicazione:
+Po: "Il cliente riceve il prodotto e poi paga"
+Attimo per attimo: Se il cliente ricevesse il prodotto prima di pagare, dovremmo gestire la fiducia, il rischio di non pagamento, la logistica inversa. Questo porta al concetto di vendita basata sulla fiducia, sistemi di credito automatico, pagamento differito, modelli di business basati sulla fiducia.
+
+Attenzione, occorre tenere a mente alcuni punti ed evitare di commettere alcuni errori comuni.
+1) Non distorcere troppe fasi contemporaneamente. Concentrati su una distorsione alla volta per mantenere la provocazione gestibile.
+
+2) Non cercare di rendere la distorsione "realistica" fin dall'inizio. Mantieni la provocazione così com'è e lascia che il movimento porti a idee utili.
+
+3) Non limitarti a invertire semplicemente l'ordine. Considera anche modifiche qualitative delle fasi.
+
+Infine effettua la valutazione delle idee generate
+Dopo aver generato il ventaglio di idee alternative.
+
+Valuta ogni idea in base a questi criteri:
+
+Fattibilità: Quanto è realizzabile tecnicamente e praticamente?
+
+Vantaggi: Quali benefici concreti apporta?
+
+Risorse: Quali risorse (tempo, costi, competenze) richiede?
+
+Adeguatezza: Quanto è coerente con lo scopo originale e con il contesto di applicazione?
+
+Confronta le idee e identifica quella che risulta la migliore complessivamente, bilanciando fattibilità, vantaggi, risorse e adeguatezza.
+
+Scarta tutte le altre idee.
+
+Restituisci solo l'idea migliore come risultato finale della tecnica.
+
+Consigli pratici
+Mantieni un approccio positivo e aperto durante la generazione, ma usa rigore critico nella valutazione finale.
+
+Se necessario, usa una scala semplice (ad esempio 1-5) per ogni criterio di valutazione per facilitare il confronto. 

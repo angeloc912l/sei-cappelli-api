@@ -1,0 +1,64 @@
+Scopo
+La tecnica del "Metodo della Fuga" serve a identificare e sfidare i concetti che si danno per scontati in un'idea.
+L'obiettivo è rompere gli schemi mentali rigidi identificando le convenzioni nascoste e generando alternative innovative.
+
+La tecnica del metodo della fuga è una delle tecniche della provocazione ideate da Edward De Bono.
+
+Passaggi da seguire
+1) Focalizzazione sull'idea di base.
+
+2) Identifica i concetti che si danno per scontati.
+   - Cerca le convenzioni, i principi, le regole che si assumono come vere
+   - Esempi: "Le riunioni si fanno in presenza", "I prodotti si vendono nei negozi", "Gli studenti studiano sui libri"
+
+3) Genera la provocazione operativa (Po).
+   - Po: "Supponiamo che questa cosa non sia scontata, che non si possa fare in questo modo"
+   - Trasforma l'assunto in una domanda provocatoria
+
+4) Partendo dalla provocazione, sviluppa 3 nuove idee alternative.
+
+Un esempio di applicazione:
+Idea: "Migliorare la comunicazione aziendale"
+Concetti scontati identificati: "La comunicazione avviene tra persone", "La comunicazione è verbale/scritta"
+Po: "E se la comunicazione non avvenisse tra persone?" oppure "E se la comunicazione non fosse verbale/scritta?"
+
+Utilizzo del Movimento:
+Per generare nuove idee e quindi per progredire da una provocazione ad una nuova idea utile, usa la tecnica "Attimo per Attimo".
+
+Attimo per attimo:
+Immagina di esplorare le conseguenze di una provocazione con l'aiuto della fantasia, cercando di visualizzare cosa accadrebbe "attimo per attimo". Mediante questo metodo di osservazione cerca di sviluppare qualche concetto o idea interessante.
+
+Esempio di applicazione:
+Po: "La comunicazione non avviene tra persone"
+Attimo per attimo: Se la comunicazione non avvenisse tra persone, potrebbe avvenire tra sistemi, tra oggetti, tra ambienti. Un sistema potrebbe comunicare direttamente con un altro sistema, gli oggetti potrebbero comunicare tra loro, l'ambiente potrebbe comunicare con le persone. Questo porta al concetto di comunicazione ambientale, comunicazione tra oggetti intelligenti, comunicazione sistemica.
+
+Attenzione, occorre tenere a mente alcuni punti ed evitare di commettere alcuni errori comuni.
+1) Non cercare di stabilire troppi collegamenti: questo suggerisce quest'altro...il che ci porta a questo...e così via. Se si stabiliscono troppi collegamenti si finisce inevitabilmente per ritornare a idee preesistenti.
+
+2) Non elencare tutte le possibili eccezioni o casi particolari. Concentrati sui concetti principali che si danno per scontati.
+
+3) Non cercare di adattare la provocazione per renderla più "realistica". Mantieni la provocazione così com'è.
+
+Infine effettua la valutazione delle idee generate
+Dopo aver generato il ventaglio di idee alternative.
+
+Valuta ogni idea in base a questi criteri:
+
+Fattibilità: Quanto è realizzabile tecnicamente e praticamente?
+
+Vantaggi: Quali benefici concreti apporta?
+
+Risorse: Quali risorse (tempo, costi, competenze) richiede?
+
+Adeguatezza: Quanto è coerente con lo scopo originale e con il contesto di applicazione?
+
+Confronta le idee e identifica quella che risulta la migliore complessivamente, bilanciando fattibilità, vantaggi, risorse e adeguatezza.
+
+Scarta tutte le altre idee.
+
+Restituisci solo l'idea migliore come risultato finale della tecnica.
+
+Consigli pratici
+Mantieni un approccio positivo e aperto durante la generazione, ma usa rigore critico nella valutazione finale.
+
+Se necessario, usa una scala semplice (ad esempio 1-5) per ogni criterio di valutazione per facilitare il confronto. 
