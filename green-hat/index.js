@@ -12,10 +12,18 @@ const strategieValutazione = ['ventaglio', 'entrata_casuale', 'provocazione_inte
 
 async function runGreenHatStrategies(intenzione, params) {
   if (intenzione === 'valutazione') {
+    console.log("🔄 Esecuzione strategie:", strategieValutazione);
     const results = await Promise.all(
       strategieValutazione.map(async (nome) => {
-        const result = await strategies[nome](params);
-        return { strategia: nome, ...result };
+        console.log(`📋 Esecuzione strategia: ${nome}`);
+        try {
+          const result = await strategies[nome](params);
+          console.log(`✅ Strategia ${nome} completata`);
+          return { strategia: nome, ...result };
+        } catch (error) {
+          console.error(`❌ Errore strategia ${nome}:`, error.message);
+          return { strategia: nome, rispostaTesto: null, rispostaJSON: null, errore: error.message };
+        }
       })
     );
     return results;

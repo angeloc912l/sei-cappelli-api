@@ -8,86 +8,7 @@ module.exports = async function provocazioneIntelligenteStrategy(params) {
   try {
     console.log("🎯 Strategia Provocazione Intelligente - Assistant ID:", ASSISTANT_ID);
 
-    // Step 1: Analisi dell'idea per decidere la tecnica
-    const threadAnalisiResponse = await axios.post(
-      "https://api.openai.com/v1/threads",
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
-          "OpenAI-Beta": "assistants=v2"
-        },
-      }
-    );
-    const threadAnalisiID = threadAnalisiResponse.data.id;
-    
-    await axios.post(
-      `https://api.openai.com/v1/threads/${threadAnalisiID}/messages`,
-      {
-        role: "user",
-        content: `Analizza questa idea e decidi quale tecnica di provocazione applicare:
-
-IDEA: "${domanda}"
-
-CRITERI:
-- METODO DELLA FUGA: Se l'idea contiene principi/convenzioni che si danno per scontati
-- DISTORSIONE: Se l'idea contiene procedure sequenziali standard
-
-Rispondi solo con: "metodo_fuga" o "distorsione"`
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
-          "OpenAI-Beta": "assistants=v2"
-        },
-      }
-    );
-
-    const runAnalisi = await axios.post(
-      `https://api.openai.com/v1/threads/${threadAnalisiID}/runs`,
-      { assistant_id: ASSISTANT_ID },
-      {
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
-          "OpenAI-Beta": "assistants=v2"
-        },
-      }
-    );
-
-    let statusAnalisi = runAnalisi.data.status;
-    while (statusAnalisi !== "completed") {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const checkStatus = await axios.get(
-        `https://api.openai.com/v1/threads/${threadAnalisiID}/runs/${runAnalisi.data.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${API_KEY}`,
-            "Content-Type": "application/json",
-            "OpenAI-Beta": "assistants=v2"
-          },
-        }
-      );
-      statusAnalisi = checkStatus.data.status;
-    }
-
-    const rispostaAnalisi = await axios.get(
-      `https://api.openai.com/v1/threads/${threadAnalisiID}/messages`,
-      {
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
-          "OpenAI-Beta": "assistants=v2"
-        },
-      }
-    );
-
-    const tecnicaScelta = rispostaAnalisi.data.data[0].content[0].text.value.trim();
-    console.log("🎯 Tecnica scelta:", tecnicaScelta);
-
-    // Step 2: Crea thread per l'applicazione della tecnica
+    // Step 1: Crea un nuovo thread
     const threadResponse = await axios.post(
       "https://api.openai.com/v1/threads",
       {},
@@ -102,29 +23,29 @@ Rispondi solo con: "metodo_fuga" o "distorsione"`
     const threadID = threadResponse.data.id;
     console.log("Thread creato con ID:", threadID);
 
-    // Step 3: Aggiungi il messaggio dell'utente al thread
+    // Step 2: Aggiungi il messaggio dell'utente al thread
     await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/messages`,
       {
         role: "user",
-        content: `Strategia Provocazione Intelligente - Cappello Verde:
+        content: `Strategia Provocazione Intelligente - Cappello Verde: 
 
 IDEA ORIGINALE: "${domanda}"
 
-TECNICA APPLICATA: ${tecnicaScelta}
+Analizza l'idea e applica la tecnica di provocazione più appropriata:
+- Se l'idea contiene principi/convenzioni che si danno per scontati → Usa METODO DELLA FUGA
+- Se l'idea contiene procedure sequenziali standard → Usa DISTORSIONE
 
-Leggi le istruzioni dal file: ${tecnicaScelta === 'metodo_fuga' ? 'verde-valutazione-metodo-fuga.txt' : 'verde-valutazione-distorsione.txt'}
-
-Applica rigorosamente le istruzioni del file specificato.
+Applica rigorosamente la tecnica scelta e genera 3 nuove idee innovative.
 
 Rispondi sempre:
-1. Inizia con una risposta motivante e chiara (max 2-3 frasi) che spiega l'idea migliore e i suoi benefici, senza scrivere un report.
+1. Inizia con una risposta motivante e chiara (max 2-3 frasi) che spiega l'idea migliore e i suoi benefici.
 2. Subito dopo, restituisci solo il blocco JSON strutturato come segue, racchiuso tra \`\`\`json e \`\`\`:
 
 {
   "scopo": {
     "testo": "...",
-    "tecnica_scelta": "...",
+    "tecnica_scelta": "metodo_fuga|distorsione",
     "provocazione": "...",
     "idee_alternative": ["...", "...", "..."]
   },
@@ -137,7 +58,7 @@ Rispondi sempre:
   }
 }
 
-Non aggiungere altro testo, spiegazione o passaggio.`
+Non aggiungere altro testo, spiegazione o passaggio.`,
       },
       {
         headers: {
@@ -149,7 +70,7 @@ Non aggiungere altro testo, spiegazione o passaggio.`
     );
     console.log("Messaggio utente aggiunto al thread");
 
-    // Step 4: Avvia l'analisi del thread con l'assistante
+    // Step 3: Avvia l'analisi del thread con l'assistante
     const runResponse = await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/runs`,
       {
@@ -168,7 +89,7 @@ Non aggiungere altro testo, spiegazione o passaggio.`
     let runID = runResponse.data.id;
     console.log("Run avviato con ID:", runID);
 
-    // Step 5: Attendi la risposta elaborata
+    // Step 4: Attendi la risposta elaborata
     while (status !== "completed") {
       console.log("Attesa elaborazione strategia provocazione intelligente...");
       await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -188,7 +109,7 @@ Non aggiungere altro testo, spiegazione o passaggio.`
 
     console.log("Run completato, recupero risposta strategia provocazione intelligente...");
 
-    // Step 6: Recupera la risposta finale
+    // Step 5: Recupera la risposta finale
     const finalMessagesResponse = await axios.get(
       `https://api.openai.com/v1/threads/${threadID}/messages`,
       {
