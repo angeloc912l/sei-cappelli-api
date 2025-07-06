@@ -285,7 +285,7 @@ Cappello ${cappelloObj.nome.toUpperCase()}: ${intenzioni[intenzioneLower].cappel
 Domanda/idea dell'utente: "${domanda}"
 `;
 
-  const temperature = (cappelloObj.nome === 'rosso' && intenzioneLower === 'valutazione') ? 0.8 : 0;
+  const temperature = (cappelloObj.nome === 'rosso' && (intenzioneLower === 'valutazione' || intenzioneLower === 'generazione')) ? 0.8 : 0;
 
   try {
     const apiStartTime = Date.now();
@@ -293,8 +293,8 @@ Domanda/idea dell'utente: "${domanda}"
     const apiEndTime = Date.now();
     console.log(`[${new Date().toISOString()}] TEMPO CHIAMATA API: ${apiEndTime - apiStartTime}ms`);
     
-    // Parsing JSON per il cappello bianco, rosso, nero e giallo
-    if ((cappelloObj.nome === 'bianco' || cappelloObj.nome === 'rosso' || cappelloObj.nome === 'nero' || cappelloObj.nome === 'giallo') && intenzioneLower === 'valutazione') {
+    // Parsing JSON per il cappello bianco, rosso, nero, giallo, verde e blu per valutazione e generazione
+    if ((cappelloObj.nome === 'bianco' || cappelloObj.nome === 'rosso' || cappelloObj.nome === 'nero' || cappelloObj.nome === 'giallo' || cappelloObj.nome === 'verde' || cappelloObj.nome === 'blu') && (intenzioneLower === 'valutazione' || intenzioneLower === 'generazione')) {
       try {
         const startTime = Date.now();
         
