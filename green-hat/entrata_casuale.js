@@ -1,9 +1,16 @@
 const axios = require('axios');
 
 module.exports = async function entrataCasualeStrategy(params) {
-  const { domanda, session_uuid, ...rest } = params;
+  const { domanda, session_uuid, intenzione, ...rest } = params;
   const API_KEY = process.env.OPENAI_API_KEY;
-  const ASSISTANT_ID = process.env.OPENAI_ENTRATA_CASUALE_ASSISTANT_ID || "asst_J4f9H0yuFZdHMyE57Q8KmpMW"; // fallback al vecchio ID
+  
+  // Scegli l'assistant in base all'intenzione
+  let ASSISTANT_ID;
+  if (intenzione === 'generazione') {
+    ASSISTANT_ID = process.env.OPENAI_ENTRATA_CASUALE_GENERAZIONE_ASSISTANT_ID || "asst_J4f9H0yuFZdHMyE57Q8KmpMW";
+  } else {
+    ASSISTANT_ID = process.env.OPENAI_ENTRATA_CASUALE_ASSISTANT_ID || "asst_J4f9H0yuFZdHMyE57Q8KmpMW";
+  }
 
   try {
     console.log("🎯 Strategia Entrata Casuale - Assistant ID:", ASSISTANT_ID);
@@ -103,11 +110,36 @@ module.exports = async function entrataCasualeStrategy(params) {
     console.log("🎲 Parola casuale generata:", parolaCasuale);
 
     // Step 2: Aggiungi il messaggio dell'utente al thread
-    await axios.post(
-      `https://api.openai.com/v1/threads/${threadID}/messages`,
-      {
-        role: "user",
-        content: `Strategia Entrata Casuale - Cappello Verde: 
+    const messaggioUtente = intenzione === 'generazione' 
+      ? `Strategia Entrata Casuale - Cappello Verde (Generazione): 
+
+IDEA ORIGINALE: "${domanda}"
+
+PAROLA CASUALE: "${parolaCasuale}"
+
+Usa la tecnica dell'entrata casuale per generare nuove idee creative per risolvere il problema. Combina l'idea originale con la parola casuale per creare connessioni inaspettate e innovative. 
+
+Genera almeno 3 nuove idee che:
+1. Partono dal problema originale
+2. Incorporano elementi della parola casuale
+3. Creano soluzioni innovative e pratiche
+
+Restituisci la risposta in formato JSON con questa struttura:
+{
+  "scopo": {
+    "testo": "problema originale",
+    "parola_casuale": ["parola1", "parola2"],
+    "idee_alternative": ["idea1", "idea2", "idea3"]
+  },
+  "valutazione": {
+    "fattibilita": "valutazione fattibilità",
+    "vantaggi": "vantaggi principali",
+    "risorse": "risorse necessarie",
+    "adeguatezza": "adeguatezza al contesto",
+    "idea_migliore": "la migliore idea tra quelle generate"
+  }
+}`
+      : `Strategia Entrata Casuale - Cappello Verde (Valutazione): 
 
 IDEA ORIGINALE: "${domanda}"
 
@@ -134,7 +166,13 @@ Restituisci la risposta in formato JSON con questa struttura:
     "adeguatezza": "adeguatezza al contesto",
     "idea_migliore": "la migliore idea tra quelle generate"
   }
-}`,
+}`;
+    
+    await axios.post(
+      `https://api.openai.com/v1/threads/${threadID}/messages`,
+      {
+        role: "user",
+        content: messaggioUtente,
       },
       {
         headers: {

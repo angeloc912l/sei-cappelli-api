@@ -60,19 +60,29 @@ function analizzaIdeaPerTecnica(idea) {
 }
 
 module.exports = async function provocazioneIntelligenteStrategy(params) {
-  const { domanda, session_uuid, ...rest } = params;
+  const { domanda, session_uuid, intenzione, ...rest } = params;
   const API_KEY = process.env.OPENAI_API_KEY;
   
-  // Scegli l'assistant in base alla tecnica
+  // Scegli l'assistant in base alla tecnica e all'intenzione
   const tecnicaScelta = analizzaIdeaPerTecnica(domanda);
   let ASSISTANT_ID;
   
-  if (tecnicaScelta === 'metodo_fuga') {
-    ASSISTANT_ID = process.env.OPENAI_METODO_FUGA_ASSISTANT_ID || "asst_default_id";
-    console.log("🎯 Strategia Metodo della Fuga - Assistant ID:", ASSISTANT_ID);
+  if (intenzione === 'generazione') {
+    if (tecnicaScelta === 'metodo_fuga') {
+      ASSISTANT_ID = process.env.OPENAI_METODO_FUGA_GENERAZIONE_ASSISTANT_ID || "asst_default_id";
+      console.log("🎯 Strategia Metodo della Fuga (Generazione) - Assistant ID:", ASSISTANT_ID);
+    } else {
+      ASSISTANT_ID = process.env.OPENAI_DISTORSIONE_GENERAZIONE_ASSISTANT_ID || "asst_default_id";
+      console.log("🎯 Strategia Distorsione (Generazione) - Assistant ID:", ASSISTANT_ID);
+    }
   } else {
-    ASSISTANT_ID = process.env.OPENAI_DISTORSIONE_ASSISTANT_ID || "asst_default_id";
-    console.log("🎯 Strategia Distorsione - Assistant ID:", ASSISTANT_ID);
+    if (tecnicaScelta === 'metodo_fuga') {
+      ASSISTANT_ID = process.env.OPENAI_METODO_FUGA_ASSISTANT_ID || "asst_default_id";
+      console.log("🎯 Strategia Metodo della Fuga (Valutazione) - Assistant ID:", ASSISTANT_ID);
+    } else {
+      ASSISTANT_ID = process.env.OPENAI_DISTORSIONE_ASSISTANT_ID || "asst_default_id";
+      console.log("🎯 Strategia Distorsione (Valutazione) - Assistant ID:", ASSISTANT_ID);
+    }
   }
 
   try {
@@ -94,7 +104,13 @@ module.exports = async function provocazioneIntelligenteStrategy(params) {
     console.log("Thread creato con ID:", threadID);
 
     // Step 2: Aggiungi il messaggio dell'utente al thread
-    const messaggioUtente = `IDEA ORIGINALE: "${domanda}"
+    const messaggioUtente = intenzione === 'generazione'
+      ? `PROBLEMA ORIGINALE: "${domanda}"
+
+Applica la tecnica: ${tecnicaScelta}
+
+Leggi le istruzioni dal file corrispondente nel playground e applica rigorosamente la tecnica scelta per generare soluzioni creative al problema.`
+      : `IDEA ORIGINALE: "${domanda}"
 
 Applica la tecnica: ${tecnicaScelta}
 

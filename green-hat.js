@@ -9,6 +9,7 @@ const strategies = {
 };
 
 const strategieValutazione = ['ventaglio', 'entrata_casuale', 'provocazione_intelligente'];
+const strategieGenerazione = ['ventaglio', 'entrata_casuale', 'provocazione_intelligente']; // Per ora usa le stesse strategie
 
 async function runGreenHatStrategies(intenzione, params) {
   console.log(`🎯 Esecuzione strategie cappello verde - Intenzione: ${intenzione}`);
@@ -17,6 +18,17 @@ async function runGreenHatStrategies(intenzione, params) {
     console.log('🔄 Esecuzione multiple strategie per valutazione...');
     const results = await Promise.all(
       strategieValutazione.map(async (nome) => {
+        console.log(`📋 Esecuzione strategia: ${nome}`);
+        const result = await strategies[nome](params);
+        return { strategia: nome, ...result };
+      })
+    );
+    console.log(`✅ Completate ${results.length} strategie`);
+    return results;
+  } else if (intenzione === 'generazione') {
+    console.log('🔄 Esecuzione multiple strategie per generazione...');
+    const results = await Promise.all(
+      strategieGenerazione.map(async (nome) => {
         console.log(`📋 Esecuzione strategia: ${nome}`);
         const result = await strategies[nome](params);
         return { strategia: nome, ...result };

@@ -1,9 +1,16 @@
 const axios = require('axios');
 
 module.exports = async function ventaglioStrategy(params) {
-  const { domanda, session_uuid, ...rest } = params;
+  const { domanda, session_uuid, intenzione, ...rest } = params;
   const API_KEY = process.env.OPENAI_API_KEY;
-  const ASSISTANT_ID = process.env.OPENAI_VENTAGLIO_ASSISTANT_ID || "asst_J4f9H0yuFZdHMyE57Q8KmpMW"; // fallback al vecchio ID
+  
+  // Scegli l'assistant in base all'intenzione
+  let ASSISTANT_ID;
+  if (intenzione === 'generazione') {
+    ASSISTANT_ID = process.env.OPENAI_VENTAGLIO_GENERAZIONE_ASSISTANT_ID || "asst_J4f9H0yuFZdHMyE57Q8KmpMW";
+  } else {
+    ASSISTANT_ID = process.env.OPENAI_VENTAGLIO_ASSISTANT_ID || "asst_J4f9H0yuFZdHMyE57Q8KmpMW";
+  }
 
   try {
     console.log("🎯 Strategia Ventaglio - Assistant ID:", ASSISTANT_ID);
@@ -24,11 +31,15 @@ module.exports = async function ventaglioStrategy(params) {
     console.log("Thread creato con ID:", threadID);
 
     // Step 2: Aggiungi il messaggio dell'utente al thread
+    const messaggioUtente = intenzione === 'generazione' 
+      ? `Strategia Ventaglio - Cappello Verde (Generazione): analizza il problema e genera idee creative alternative usando la tecnica del ventaglio partendo dalla seguente domanda o idea: "${domanda}"`
+      : `Strategia Ventaglio - Cappello Verde (Valutazione): analizza e genera idee alternative usando la tecnica del ventaglio partendo dalla seguente domanda o idea: "${domanda}"`;
+    
     await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/messages`,
       {
         role: "user",
-        content: `Strategia Ventaglio - Cappello Verde: analizza e genera idee alternative usando la tecnica del ventaglio partendo dalla seguente domanda o idea: "${domanda}"`,
+        content: messaggioUtente,
       },
       {
         headers: {
