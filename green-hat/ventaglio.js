@@ -32,7 +32,7 @@ module.exports = async function ventaglioStrategy(params) {
 
     // Step 2: Aggiungi il messaggio dell'utente al thread
     const messaggioUtente = intenzione === 'generazione' 
-      ? `Strategia Ventaglio - Cappello Verde (Generazione): analizza il problema e genera idee creative alternative usando la tecnica del ventaglio partendo dalla seguente domanda o idea: "${domanda}"`
+      ? `Strategia Ventaglio - Cappello Verde (Generazione): analizza il problema e genera idee creative alternative usando la tecnica del ventaglio partendo dal seguente problema: "${domanda}"`
       : `Strategia Ventaglio - Cappello Verde (Valutazione): analizza e genera idee alternative usando la tecnica del ventaglio partendo dalla seguente domanda o idea: "${domanda}"`;
     
     await axios.post(
