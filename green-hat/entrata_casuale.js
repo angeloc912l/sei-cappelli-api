@@ -113,60 +113,18 @@ module.exports = async function entrataCasualeStrategy(params) {
     const messaggioUtente = intenzione === 'generazione' 
       ? `Strategia Entrata Casuale - Cappello Verde (Generazione): 
 
-IDEA ORIGINALE: "${domanda}"
+PROBLEMA: "${domanda}"
 
 PAROLA CASUALE: "${parolaCasuale}"
 
-Usa la tecnica dell'entrata casuale per generare nuove idee creative per risolvere il problema. Combina l'idea originale con la parola casuale per creare connessioni inaspettate e innovative. 
-
-Genera almeno 3 nuove idee che:
-1. Partono dal problema originale
-2. Incorporano elementi della parola casuale
-3. Creano soluzioni innovative e pratiche
-
-Restituisci la risposta in formato JSON con questa struttura:
-{
-  "scopo": {
-    "testo": "problema originale",
-    "parola_casuale": ["parola1", "parola2"],
-    "idee_alternative": ["idea1", "idea2", "idea3"]
-  },
-  "valutazione": {
-    "fattibilita": "valutazione fattibilità",
-    "vantaggi": "vantaggi principali",
-    "risorse": "risorse necessarie",
-    "adeguatezza": "adeguatezza al contesto",
-    "idea_migliore": "la migliore idea tra quelle generate"
-  }
-}`
+Applica la tecnica dell'entrata casuale per generare soluzioni creative al problema.`
       : `Strategia Entrata Casuale - Cappello Verde (Valutazione): 
 
 IDEA ORIGINALE: "${domanda}"
 
 PAROLA CASUALE: "${parolaCasuale}"
 
-Usa la tecnica dell'entrata casuale per generare nuove idee creative. Combina l'idea originale con la parola casuale per creare connessioni inaspettate e innovative. 
-
-Genera almeno 3 nuove idee che:
-1. Partono dall'idea originale
-2. Incorporano elementi della parola casuale
-3. Creano soluzioni innovative e pratiche
-
-Restituisci la risposta in formato JSON con questa struttura:
-{
-  "scopo": {
-    "testo": "idea originale",
-    "parola_casuale": ["parola1", "parola2"],
-    "idee_alternative": ["idea1", "idea2", "idea3"]
-  },
-  "valutazione": {
-    "fattibilita": "valutazione fattibilità",
-    "vantaggi": "vantaggi principali",
-    "risorse": "risorse necessarie",
-    "adeguatezza": "adeguatezza al contesto",
-    "idea_migliore": "la migliore idea tra quelle generate"
-  }
-}`;
+Applica la tecnica dell'entrata casuale per generare idee creative.`;
     
     await axios.post(
       `https://api.openai.com/v1/threads/${threadID}/messages`,
