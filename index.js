@@ -170,7 +170,8 @@ app.post('/sei-cappelli', async (req, res) => {
     return res.status(400).json({ errore: 'La domanda contiene ripetizioni sospette o senza senso.' });
   }
 
-  // Moderazione semantica
+  // Moderazione semantica (temporaneamente disabilitata per test)
+  /*
   try {
     const moderazione = await callSemanticModeration(domanda);
     if (['OFFENSIVO', 'POTENZIALMENTE', 'NO-SENSE'].includes(moderazione.category)) {
@@ -180,6 +181,7 @@ app.post('/sei-cappelli', async (req, res) => {
     console.error('Errore nella moderazione:', err.message);
     return res.status(500).json({ errore: 'Errore nella moderazione del contenuto.' });
   }
+  */
 
   if (cappello.toLowerCase() === 'verde') {
     try {
