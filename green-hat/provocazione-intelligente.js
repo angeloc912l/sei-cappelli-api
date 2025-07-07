@@ -105,7 +105,7 @@ module.exports = async function provocazioneIntelligenteStrategy(params) {
 
     // Step 2: Aggiungi il messaggio dell'utente al thread
     const messaggioUtente = intenzione === 'generazione'
-      ? `PROBLEMA ORIGINALE: "${domanda}"
+      ? `PROBLEMA: "${domanda}"
 
 Applica la tecnica: ${tecnicaScelta}
 
