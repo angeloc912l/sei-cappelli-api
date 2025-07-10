@@ -403,7 +403,7 @@ Domanda/idea dell'utente: "${domanda}"
 });
 
 // Endpoint di validazione domanda/idea/problema (leggero, senza AI)
-app.post('/valida-domanda', (req, res) => {
+app.post('/valida-domanda', async (req, res) => {
   const { domanda, intenzione } = req.body;
   const testoDefault = "Scrivi qui un’idea o un problema da esplorare con l’aiuto dell’AI";
   const lunghezzaMinima = 15;
@@ -421,8 +421,23 @@ app.post('/valida-domanda', (req, res) => {
   if (domanda.length < lunghezzaMinima) {
     return res.status(400).json({ errore: 'Testo troppo breve.' });
   }
+  if (leoProfanity.check(domanda)) {
+    return res.status(400).json({ errore: 'La domanda contiene linguaggio inappropriato.' });
+  }
+  if (checkRipetizioniBanali(domanda)) {
+    return res.status(400).json({ errore: 'La domanda contiene ripetizioni sospette o senza senso.' });
+  }
 
-  // Puoi aggiungere qui altri controlli se vuoi
+  // Moderazione semantica (se presente)
+  try {
+    const moderazione = await callSemanticModeration(domanda);
+    if (["OFFENSIVO", "POTENZIALMENTE", "NO-SENSE"].includes(moderazione.category)) {
+      return res.status(400).json({ errore: `Contenuto non accettabile: ${moderazione.text}` });
+    }
+  } catch (err) {
+    console.error('Errore nella moderazione:', err.message);
+    return res.status(500).json({ errore: 'Errore nella moderazione del contenuto.' });
+  }
 
   return res.json({ ok: true });
 });
