@@ -88,6 +88,30 @@ const intenzioni = {
   }
 };
 
+// --- VALUTAZIONE ---
+// Bianco
+intenzioni.valutazione.cappelli.bianco += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+// Rosso
+intenzioni.valutazione.cappelli.rosso += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+// Nero
+intenzioni.valutazione.cappelli.nero += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+// Giallo
+intenzioni.valutazione.cappelli.giallo += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+// Blu
+intenzioni.valutazione.cappelli.blu += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+
+// --- GENERAZIONE ---
+// Bianco
+intenzioni.generazione.cappelli.bianco += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+// Rosso
+intenzioni.generazione.cappelli.rosso += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+// Nero
+intenzioni.generazione.cappelli.nero += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+// Giallo
+intenzioni.generazione.cappelli.giallo += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+// Blu
+intenzioni.generazione.cappelli.blu += ' La risposta complessiva non deve superare 800 caratteri (spazi inclusi).';
+
 function checkRipetizioniBanali(testo) {
   return /(\b\w+\b)(?:\s+\1){2,}/i.test(testo);
 }
