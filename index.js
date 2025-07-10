@@ -402,6 +402,31 @@ Domanda/idea dell'utente: "${domanda}"
   }
 });
 
+// Endpoint di validazione domanda/idea/problema (leggero, senza AI)
+app.post('/valida-domanda', (req, res) => {
+  const { domanda, intenzione } = req.body;
+  const testoDefault = "Scrivi qui un’idea o un problema da esplorare con l’aiuto dell’AI";
+  const lunghezzaMinima = 15;
+
+  if (!domanda || !intenzione) {
+    return res.status(400).json({ errore: 'domanda o intenzione mancanti.' });
+  }
+
+  const domandaNormalizzata = domanda.trim().toLowerCase();
+  const testoDefaultNormalizzato = testoDefault.toLowerCase();
+
+  if (domandaNormalizzata === testoDefaultNormalizzato) {
+    return res.status(400).json({ errore: 'Testo generico non valido.' });
+  }
+  if (domanda.length < lunghezzaMinima) {
+    return res.status(400).json({ errore: 'Testo troppo breve.' });
+  }
+
+  // Puoi aggiungere qui altri controlli se vuoi
+
+  return res.json({ ok: true });
+});
+
 // Endpoint per recuperare tutte le strategie di una sessione
 app.get('/strategie/:sessionUUID', async (req, res) => {
   const { sessionUUID } = req.params;
