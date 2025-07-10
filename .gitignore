@@ -1,3 +1,5 @@
 node_modules
 .env
 test-openai.mjs
+sei-cappelli-api/debug_db.php
+sei-cappelli-api/genera_pdf.php
