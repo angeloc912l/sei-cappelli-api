@@ -467,6 +467,17 @@ app.get('/strategie/:sessionUUID', async (req, res) => {
   }
 });
 
+// Rotta di test per la connessione al database
+app.get('/test-db-connection', async (req, res) => {
+  try {
+    const conn = await db.getConnection();
+    conn.release();
+    res.json({ success: true, message: 'Connessione al database riuscita!' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Errore di connessione al database', error: err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server in ascolto sulla porta ${PORT}`);
 });
