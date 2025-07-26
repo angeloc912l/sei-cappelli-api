@@ -128,7 +128,7 @@ Classifica il contenuto come:
   const response = await axios.post(
     'https://api.openai.com/v1/chat/completions',
     {
-      model: 'gpt-4o',
+      model: 'gpt-3.5-turbo-16k',
       messages: [
         { role: 'system', content: 'Sei un moderatore di contenuti.' },
         { role: 'user', content: prompt }
@@ -151,7 +151,7 @@ async function callOpenAI(prompt, temperature = 0) {
   const response = await axios.post(
     'https://api.openai.com/v1/chat/completions',
     {
-      model: 'gpt-4o',
+      model: 'gpt-3.5-turbo-16k',
       messages: [
         { role: 'system', content: 'Sei un assistente che ragiona secondo la tecnica dei Sei Cappelli di De Bono.' },
         { role: 'user', content: prompt }
