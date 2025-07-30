@@ -211,6 +211,7 @@ app.post('/sei-cappelli', async (req, res) => {
       const results = await callAssistantAPI(intenzione, { domanda, sessionUUID });
       
       // Salva tutte le risposte nel database se sessionUUID è presente
+      console.log(`🔍 DEBUG - Cappello Verde, SessionUUID: ${sessionUUID ? 'Presente' : 'Mancante'}`);
       if (sessionUUID) {
         try {
           // Salva ogni strategia separatamente con timestamp diversi
@@ -260,6 +261,8 @@ app.post('/sei-cappelli', async (req, res) => {
         } catch (dbError) {
           console.error('❌ Errore salvataggio DB verde:', dbError.message);
         }
+      } else {
+        console.log(`⚠️  ATTENZIONE - Cappello Verde: SessionUUID mancante, risposte NON salvate nel database`);
       }
       
       // Restituisci entrambe le strategie per Storyline
@@ -338,6 +341,7 @@ Domanda/idea dell'utente: "${domanda}"
         const strategia = 'default';
         
         // Salva su DB solo se sessionUUID è presente
+        console.log(`🔍 DEBUG - Cappello: ${cappelloObj.nome}, SessionUUID: ${sessionUUID ? 'Presente' : 'Mancante'}`);
         if (sessionUUID) {
           try {
             const now = new Date();
@@ -368,6 +372,8 @@ Domanda/idea dell'utente: "${domanda}"
           } catch (dbError) {
             console.error('❌ Errore salvataggio DB:', dbError.message);
           }
+        } else {
+          console.log(`⚠️  ATTENZIONE - Cappello ${cappelloObj.nome}: SessionUUID mancante, risposta NON salvata nel database`);
         }
         
         const parseTime = Date.now();
